@@ -1,6 +1,5 @@
 import EnemyDatas from "../datas/enemy.json"
 
-const enemyDatas: any = EnemyDatas
 
 export class Enemy extends Phaser.GameObjects.Sprite {
   private hp = 0
@@ -14,7 +13,8 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   constructor(scene: Phaser.Scene, stage: number, isStrong: boolean) {
     super(scene, 0, 0, "")
 
-    const enemyName = getEnemyName(stage, isStrong)
+    const enemyName = this.determineName(stage, isStrong)
+    const enemyDatas: any = EnemyDatas
     const enemyData = enemyDatas[enemyName]
 
     this.hp = enemyData.hp
@@ -35,37 +35,38 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   isDead(): boolean {
-    return this.hp <= 0
+    return this.hp <= 0 || this.path.t >= 1
+  }
+
+  die() {
+    this.setActive(false)
+    this.setVisible(false)
+  }
+
+  private determineName(stage: number, isStrong: boolean): string {
+    const enemies = [
+      "soldier",
+      "ghost",
+      "golem",
+      "god"
+    ]
+
+    let enemyNumber = 0
+
+    if (stage >= 15)
+      enemyNumber += 3
+    else if (stage >= 10)
+      enemyNumber += 2
+    else if (stage >= 5)
+      enemyNumber += 1
+
+    if (isStrong && enemyNumber < enemies.length)
+      enemyNumber++
+
+    return enemies[enemyNumber]
   }
 
   getGold(): number {
     return this.gold
   }
-
-  die() {
-    this.destroy()
-  }
-}
-
-const getEnemyName = (stage: number, isStrong: boolean): string => {
-  const enemies = [
-    "soldier",
-    "ghost",
-    "golem",
-    "god"
-  ]
-
-  let enemyNumber = 0
-
-  if (stage >= 15)
-    enemyNumber += 3
-  else if (stage >= 10)
-    enemyNumber += 2
-  else if (stage >= 5)
-    enemyNumber += 1
-
-  if (isStrong && enemyNumber < enemies.length)
-    enemyNumber++
-
-  return enemies[enemyNumber]
 }
