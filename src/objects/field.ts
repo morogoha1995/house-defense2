@@ -1,7 +1,7 @@
 import { TILE_SIZE } from "../constants"
 
 class Field {
-  private route!: Phaser.Curves.Path
+  route!: Phaser.Curves.Path
   private map = {
     path: {
       start: { x: 256, y: 384 },
