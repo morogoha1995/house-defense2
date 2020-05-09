@@ -1,9 +1,10 @@
 import { Field } from "../objects/field"
 import { EnemyGroup } from "../objects/enemyGroup"
+import { Wave } from "../objects/wave"
 
 class Game extends Phaser.Scene {
   private field!: Field
-  private enemies!: EnemyGroup
+  private wave!: Wave
   private isPlaying = false
 
 
@@ -17,7 +18,7 @@ class Game extends Phaser.Scene {
 
   create() {
     this.field = new Field(this)
-    this.enemies = new EnemyGroup(this)
+    this.wave = new Wave(this)
     this.isPlaying = true
   }
 
@@ -25,7 +26,7 @@ class Game extends Phaser.Scene {
     if (!this.isPlaying)
       return
 
-    this.enemies.update(this.field.route)
+    this.wave.update(this.time.now, this.field.route)
   }
 }
 
