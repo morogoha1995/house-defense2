@@ -23,7 +23,7 @@ export class Wave {
     this.current++
     this.enemyGroup.clear(true, true)
 
-    if (this.current > 5)
+    if (this.current % 5 === 0)
       this.upDifficulty()
   }
 

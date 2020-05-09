@@ -9,6 +9,7 @@ export class Weapon extends Phaser.GameObjects.Sprite {
   private price: number
   private range: number
   private interval: number
+  private nextAttack = 0
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: WeaponName) {
     super(scene, x, y, name)
@@ -24,5 +25,17 @@ export class Weapon extends Phaser.GameObjects.Sprite {
     this.price = wd.price
     this.range = wd.range
     this.interval = wd.interval
+  }
+
+  // TODO
+  attack(ePos: Phaser.Math.Vector2) {
+    if (!this.canAttack())
+      return
+
+
+  }
+
+  private canAttack(): boolean {
+    return this.scene.time.now > this.nextAttack
   }
 }
