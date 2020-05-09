@@ -25,7 +25,7 @@ class Game extends Phaser.Scene {
     if (!this.isPlaying)
       return
 
-    this.enemies.update(0, this.field.route)
+    this.enemies.update(this.field.route)
   }
 }
 

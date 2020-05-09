@@ -7,9 +7,9 @@ class Boot extends Phaser.Scene {
 
     this.load
       .image("x", "assets/imgs/x.png")
-      .image("stone", "assets/imgs/player/stone.png")
-      .image("arrow", "assets/imgs/player/arrow.png")
-      .image("rifle", "assets/imgs/player/rifle.png")
+      .image("stone", "assets/imgs/weapon/stone.png")
+      .image("arrow", "assets/imgs/weapon/arrow.png")
+      .image("rifle", "assets/imgs/weapon/rifle.png")
       .image("soldier", "assets/imgs/enemy/soldier.png")
       .image("ghost", "assets/imgs/enemy/ghost.png")
       .image("golem", "assets/imgs/enemy/golem.png")

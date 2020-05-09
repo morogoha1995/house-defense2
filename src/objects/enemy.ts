@@ -1,29 +1,26 @@
 import EnemyDatas from "../datas/enemy.json"
+import { EnemyName } from "../types/enemy"
 
 
 export class Enemy extends Phaser.GameObjects.Sprite {
-  private hp = 0
-  private speed = 0
-  private gold = 0
+  private hp: number
+  private speed: number
+  private gold: number
   private path = {
     t: 0,
     vec: new Phaser.Math.Vector2()
   }
 
-  constructor(scene: Phaser.Scene, stage: number, isStrong: boolean) {
-    super(scene, 0, 0, "")
+  constructor(scene: Phaser.Scene, name: EnemyName) {
+    super(scene, 0, 0, name)
 
-    const enemyName = this.determineName(stage, isStrong)
-    const enemyDatas: any = EnemyDatas
-    const enemyData = enemyDatas[enemyName]
+    const enemyData = EnemyDatas[name]
 
     this.hp = enemyData.hp
     this.speed = enemyData.speed
     this.gold = enemyData.gold
 
-    this
-      .setTexture(enemyName)
-      .setOrigin(0, 1)
+    this.setOrigin(0, 1)
 
     scene.add.existing(this)
   }
@@ -43,8 +40,9 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.setVisible(false)
   }
 
-  private determineName(stage: number, isStrong: boolean): string {
-    const enemies = [
+  // No longer used
+  private determineName(stage: number, isStrong: boolean): EnemyName {
+    const enemies: EnemyName[] = [
       "soldier",
       "ghost",
       "golem",

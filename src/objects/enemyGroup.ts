@@ -1,20 +1,13 @@
 import { Enemy } from "./enemy"
+import { EnemyName } from "../types/enemy"
 
 export class EnemyGroup extends Phaser.GameObjects.Group {
-  private nextSpawn = 0
-  private spawnCountInTheStage = 0
-
   constructor(scene: Phaser.Scene) {
     super(scene)
-
-    this.nextSpawn = scene.time.now
   }
 
-  update(wave: number, path: Phaser.Curves.Path) {
+  update(path: Phaser.Curves.Path) {
     this.move(path)
-
-    if (this.scene.time.now > this.nextSpawn)
-      this.spawn(wave)
   }
 
   private move(path: Phaser.Curves.Path) {
@@ -26,11 +19,7 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
     })
   }
 
-  private spawn(wave: number) {
-    const isStrong = this.spawnCountInTheStage > 5
-    this.add(new Enemy(this.scene, wave, isStrong))
-
-    this.spawnCountInTheStage++
-    this.nextSpawn = this.nextSpawn + 3000
+  spawn(name: EnemyName) {
+    this.add(new Enemy(this.scene, name))
   }
 }

@@ -1,0 +1,29 @@
+{
+  "stone": {
+    "en_name": "stone",
+    "ja_name": "投石",
+    "size": 20,
+    "atk": 1,
+    "price": 10,
+    "range": 50,
+    "interval": 30
+  },
+  "arrow": {
+    "en_name": "arrow",
+    "ja_name": "バリスタ",
+    "size": 30,
+    "atk": 3,
+    "price": 50,
+    "range": 110,
+    "interval": 40
+  },
+  "rifle": {
+    "en_name": "rifle",
+    "ja_name": "軍人",
+    "size": 40,
+    "atk": 2,
+    "price": 100,
+    "range": 60,
+    "interval": 10
+  }
+}
