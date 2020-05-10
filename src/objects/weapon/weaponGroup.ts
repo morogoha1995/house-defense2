@@ -1,4 +1,4 @@
-import { WeaponName } from "../types/weapon";
+import { WeaponName } from "../../types/weapon";
 import { Weapon } from "./weapon";
 
 // TODO

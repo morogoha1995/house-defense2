@@ -1,0 +1,14 @@
+{
+  "stone": {
+    "interval": 300,
+    "bulletSpeed": 50
+  },
+  "arrow": {
+    "interval": 300,
+    "bulletSpeed": 50
+  },
+  "rifle": {
+    "interval": 300,
+    "bulletSpeed": 50
+  }
+}
