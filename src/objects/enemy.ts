@@ -40,29 +40,6 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.setVisible(false)
   }
 
-  // No longer used
-  private determineName(stage: number, isStrong: boolean): EnemyName {
-    const enemies: EnemyName[] = [
-      "soldier",
-      "ghost",
-      "golem",
-      "god"
-    ]
-
-    let enemyNumber = 0
-
-    if (stage >= 15)
-      enemyNumber += 3
-    else if (stage >= 10)
-      enemyNumber += 2
-    else if (stage >= 5)
-      enemyNumber += 1
-
-    if (isStrong && enemyNumber < enemies.length)
-      enemyNumber++
-
-    return enemies[enemyNumber]
-  }
 
   getGold(): number {
     return this.gold

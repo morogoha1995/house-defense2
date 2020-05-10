@@ -1,5 +1,4 @@
 import { Field } from "../objects/field"
-import { EnemyGroup } from "../objects/enemyGroup"
 import { Wave } from "../objects/wave"
 
 class Game extends Phaser.Scene {
