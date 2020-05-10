@@ -1,5 +1,6 @@
 import { BulletConfig } from "../../types/weapon"
 
+// TODO
 export class Bullet extends Phaser.GameObjects.Sprite {
   private atk: number
   private speed: number

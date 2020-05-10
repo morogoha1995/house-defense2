@@ -1,7 +1,7 @@
-import { TILE_SIZE } from "../constants"
+import { TILE_SIZE, WIDTH } from "../constants"
 
 class Field {
-  route!: Phaser.Curves.Path
+  route: Phaser.Curves.Path
   private map = {
     path: {
       start: { x: 256, y: 384 },
@@ -37,6 +37,7 @@ class Field {
       [0, 0, 0, 0, 0, 0, 0, 0, 2, 0],
     ]
   }
+  bg: Phaser.GameObjects.Rectangle
 
   constructor(scene: Phaser.Scene) {
     // route
@@ -45,12 +46,15 @@ class Field {
     for (let to of this.map.path.to)
       this.route.lineTo(to.x, to.y)
 
-    this.route.draw(scene.add.graphics({ lineStyle: { color: 0xFFFFFF } }))
-
     const map = scene.make.tilemap({ data: this.map.tiles, tileWidth: TILE_SIZE, tileHeight: TILE_SIZE })
     const tiles = map.addTilesetImage("tileset")
     const layer = map.createStaticLayer(0, tiles, 0, 0)
     layer.setCollision([1])
+
+    this.bg = scene.add
+      .rectangle(0, 0, WIDTH, TILE_SIZE * this.map.tiles[0].length, 0x000000, 0)
+      .setOrigin(0, 0)
+      .setInteractive()
   }
 }
 

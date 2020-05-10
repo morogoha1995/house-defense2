@@ -22,7 +22,7 @@ window.onload = () => {
     width: WIDTH,
     height: HEIGHT,
     parent: 'app',
-    zoom: 1.25,
+    zoom: zoom,
     physics: {
       default: "arcade"
     },

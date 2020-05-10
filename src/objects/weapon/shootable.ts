@@ -3,10 +3,11 @@ import { Weapon } from "./weapon"
 import { ShootableName } from "../../types/weapon"
 import { Bullet } from "./bullet"
 
+// TODO
 export class Shootable extends Weapon {
   private interval: number
   private bulletSpeed: number
-  private nextAttack = 0
+  private nextAttack: number
   private bullets: Phaser.GameObjects.Group
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: ShootableName) {
@@ -15,6 +16,7 @@ export class Shootable extends Weapon {
     const sd = shootableDatas[name]
     this.interval = sd.interval
     this.bulletSpeed = sd.bulletSpeed
+    this.nextAttack = scene.time.now
 
     this.bullets = scene.add.group()
   }
@@ -26,6 +28,8 @@ export class Shootable extends Weapon {
 
     const bullet = new Bullet(this.scene, this.x, this.y, this.enName, { atk: this.atk, speed: this.bulletSpeed })
     this.bullets.add(bullet)
+
+    this.nextAttack += this.interval
   }
 
   private canAttack(): boolean {
