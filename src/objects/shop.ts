@@ -40,8 +40,17 @@ export class Shop {
     const wd = weaponDatas[name]
     const container = scene.add.container(x, y)
     container
-      .add(scene.add.circle(0, 0, wd.range, 0xffffff, 0.8))
-      .add(scene.add.sprite(0, 0, name))
+      .setName(name)
+      .add(
+        scene.add
+          .circle(0, 0, wd.range, 0xffffff, 0.5)
+          .setName("range")
+      )
+      .add(
+        scene.add
+          .sprite(0, 0, name)
+          .setName(name)
+      )
 
     return container
   }

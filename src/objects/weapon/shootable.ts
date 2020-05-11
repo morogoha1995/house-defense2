@@ -19,6 +19,8 @@ export class Shootable extends Weapon {
     this.nextAttack = scene.time.now
 
     this.bullets = scene.add.group()
+
+    scene.add.existing(this)
   }
 
   // TODO

@@ -50,7 +50,7 @@ class Field {
     const map = scene.make.tilemap({ data: this.map.tiles, tileWidth: TILE_SIZE, tileHeight: TILE_SIZE })
     const tiles = map.addTilesetImage("tileset")
     this.layer = map.createStaticLayer(0, tiles, 0, 0)
-    this.layer.setCollision([1])
+    this.layer.setCollision([2])
 
     this.bg = scene.add
       .rectangle(0, 0, WIDTH, TILE_SIZE * this.map.tiles[0].length, 0x000000, 0)

@@ -2,13 +2,16 @@ import { Field } from "../objects/field"
 import { Wave } from "../objects/wave"
 import { Shop } from "../objects/shop"
 import { WeaponName } from "../types/weapon"
+import { WeaponGroup } from "../objects/weapon/weaponGroup"
+import { Shootable } from "../objects/weapon/shootable"
 
 class Game extends Phaser.Scene {
   private field!: Field
   private wave!: Wave
+  private weaponGroup!: WeaponGroup
   private isPlaying = false
   private shop!: Shop
-  private selectedWeapon!: Phaser.GameObjects.Group
+  private selectedWeapon!: Phaser.GameObjects.Container
   private isOvetlap = false
 
   constructor() {
@@ -23,37 +26,61 @@ class Game extends Phaser.Scene {
     this.wave = new Wave(this)
     this.shop = new Shop(this)
     this.field = new Field(this)
-    this.selectedWeapon = this.add.group()
+    this.weaponGroup = new WeaponGroup(this)
+    this.selectedWeapon = new Phaser.GameObjects.Container(this)
 
-    this.field.bg.on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
+    this.field.bg
+      .on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
+      .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
 
     for (const key in this.shop.weapons) {
       const name = key as WeaponName
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
 
-    this.physics.add.overlap(this.selectedWeapon, this.field.layer, () => this.isOvetlap = true, undefined, this)
+    this.physics.add.collider(this.selectedWeapon, this.field.layer, this.overlapWeaponToTile, undefined, this)
 
 
     this.isPlaying = true
   }
 
   update() {
+    console.log(this.isOvetlap)
     if (!this.isPlaying)
       return
 
     this.wave.update(this.time.now, this.field.route)
   }
 
-  moveSelectedWeapon(x: number, y: number) {
-    this.isOvetlap = false
-    this.selectedWeapon.children.iterate((w: any) => w.setPosition(x, y))
+  private overlapWeaponToTile(w: any, _: any) {
+    this.isOvetlap = true
+    w.setAlpha(0.3)
   }
 
-  buyWeapon(name: WeaponName, x: number, y: number) {
-    this.selectedWeapon.clear(true, true)
+  private moveSelectedWeapon(x: number, y: number) {
+    this.isOvetlap = false
+    this.selectedWeapon.setPosition(x, y)
+  }
 
-    this.selectedWeapon.add(this.shop.buy(this, name, x, y))
+  private buyWeapon(name: WeaponName, x: number, y: number) {
+    this.selectedWeapon.removeAll(true)
+
+    this.selectedWeapon = this.shop.buy(this, name, x, y)
+  }
+
+  private putWeapon(x: number, y: number) {
+    console.log(x)
+    this.selectedWeapon.removeAll(true)
+    if (this.isOvetlap)
+      return
+
+    const name = this.selectedWeapon.name as WeaponName
+
+    let weapon = new Shootable(this, x, y, name)
+    if (name === "arrow" || name === "rifle" || name === "stone")
+      console.log("yo")
+
+    this.weaponGroup.add(weapon)
   }
 }
 

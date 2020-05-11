@@ -5,6 +5,8 @@ import { Weapon } from "./weapon";
 export class WeaponGroup extends Phaser.GameObjects.Group {
   constructor(scene: Phaser.Scene) {
     super(scene)
+
+    scene.add.existing(this)
   }
 
   update() {
@@ -15,9 +17,5 @@ export class WeaponGroup extends Phaser.GameObjects.Group {
     this.children.iterate((w: any) => {
       w.attack()
     })
-  }
-
-  make(x: number, y: number, name: WeaponName) {
-    this.add(new Weapon(this.scene, x, y, name))
   }
 }
