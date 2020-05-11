@@ -38,7 +38,7 @@ class Game extends Phaser.Scene {
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
 
-    this.physics.add.collider(this.selectedWeapon, this.field.layer, this.overlapWeaponToTile, undefined, this)
+    this.physics.add.overlap(this.selectedWeapon, this.field.layer, this.overlapWeaponToTile, undefined, this)
 
 
     this.isPlaying = true
@@ -53,6 +53,7 @@ class Game extends Phaser.Scene {
   }
 
   private overlapWeaponToTile(w: any, _: any) {
+    console.log("yo")
     this.isOvetlap = true
     w.setAlpha(0.3)
   }

@@ -39,18 +39,20 @@ export class Shop {
   buy(scene: Phaser.Scene, name: WeaponName, x: number, y: number) {
     const wd = weaponDatas[name]
     const container = scene.add.container(x, y)
+
+    const weaponSprite = scene.add
+      .sprite(0, 0, name)
+      .setName(name)
+
     container
       .setName(name)
       .add(
         scene.add
-          .circle(0, 0, wd.range, 0xffffff, 0.5)
+          .circle(0, 0, wd.range, 0xffffff, 0.4)
           .setName("range")
       )
-      .add(
-        scene.add
-          .sprite(0, 0, name)
-          .setName(name)
-      )
+      .add(weaponSprite)
+      .setSize(weaponSprite.width, weaponSprite.height)
 
     return container
   }
