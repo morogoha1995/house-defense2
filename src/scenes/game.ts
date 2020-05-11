@@ -8,8 +8,8 @@ class Game extends Phaser.Scene {
   private wave!: Wave
   private isPlaying = false
   private shop!: Shop
-  private selectedWeapon: Phaser.GameObjects.Container | null = null
-
+  private selectedWeapon!: Phaser.GameObjects.Group
+  private isOvetlap = false
 
   constructor() {
     super({ key: "game" })
@@ -23,6 +23,7 @@ class Game extends Phaser.Scene {
     this.wave = new Wave(this)
     this.shop = new Shop(this)
     this.field = new Field(this)
+    this.selectedWeapon = this.add.group()
 
     this.field.bg.on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
 
@@ -30,6 +31,8 @@ class Game extends Phaser.Scene {
       const name = key as WeaponName
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
+
+    this.physics.add.overlap(this.selectedWeapon, this.field.layer, () => this.isOvetlap = true, undefined, this)
 
 
     this.isPlaying = true
@@ -43,18 +46,14 @@ class Game extends Phaser.Scene {
   }
 
   moveSelectedWeapon(x: number, y: number) {
-    if (this.selectedWeapon)
-      this.selectedWeapon.setPosition(x, y)
+    this.isOvetlap = false
+    this.selectedWeapon.children.iterate((w: any) => w.setPosition(x, y))
   }
 
   buyWeapon(name: WeaponName, x: number, y: number) {
-    if (this.selectedWeapon) {
-      this.selectedWeapon.setActive(false)
-      this.selectedWeapon.setVisible(false)
-      this.selectedWeapon = null
-    }
+    this.selectedWeapon.clear(true, true)
 
-    this.selectedWeapon = this.shop.buy(this, name, x, y)
+    this.selectedWeapon.add(this.shop.buy(this, name, x, y))
   }
 }
 
