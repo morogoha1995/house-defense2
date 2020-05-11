@@ -1,6 +1,5 @@
 {
   "stone": {
-    "en_name": "stone",
     "ja_name": "投石",
     "size": 20,
     "atk": 1,
@@ -8,7 +7,6 @@
     "range": 50
   },
   "arrow": {
-    "en_name": "arrow",
     "ja_name": "バリスタ",
     "size": 30,
     "atk": 3,
@@ -16,8 +14,21 @@
     "range": 110
   },
   "rifle": {
-    "en_name": "rifle",
     "ja_name": "軍人",
+    "size": 40,
+    "atk": 2,
+    "price": 100,
+    "range": 60
+  },
+  "rocket": {
+    "ja_name": "ロケット",
+    "size": 40,
+    "atk": 2,
+    "price": 100,
+    "range": 60
+  },
+  "flame": {
+    "ja_name": "火炎放射器",
     "size": 40,
     "atk": 2,
     "price": 100,

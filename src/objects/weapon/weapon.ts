@@ -14,7 +14,7 @@ export class Weapon extends Phaser.GameObjects.Sprite {
 
     const wd = WeaponDatas[name]
 
-    this.enName = wd.en_name
+    this.enName = name
     this.jaName = wd.ja_name
     this.size = wd.size
     this.atk = wd.atk

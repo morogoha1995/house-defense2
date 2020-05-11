@@ -1,7 +1,7 @@
 import { Field } from "../objects/field"
 import { Wave } from "../objects/wave"
 import { Shop } from "../objects/shop"
-import { WeaponName } from "../types/weapon"
+import { WeaponName, ShootableName } from "../types/weapon"
 import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
 
@@ -69,16 +69,22 @@ class Game extends Phaser.Scene {
   }
 
   private putWeapon(x: number, y: number) {
-    console.log(x)
     this.selectedWeapon.removeAll(true)
     if (this.isOvetlap)
       return
 
-    const name = this.selectedWeapon.name as WeaponName
+    const name = this.selectedWeapon.name as ShootableName
 
-    let weapon = new Shootable(this, x, y, name)
-    if (name === "arrow" || name === "rifle" || name === "stone")
-      console.log("yo")
+    let weapon
+
+    /* TODO
+    if (name === "flame")
+      console.log()
+    else if (name === "rocket")
+      console.log()
+    */
+
+    weapon = new Shootable(this, x, y, name)
 
     this.weaponGroup.add(weapon)
   }
