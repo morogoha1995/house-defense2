@@ -4,6 +4,7 @@ import { Shop } from "../objects/shop"
 import { WeaponName, ShootableName } from "../types/weapon"
 import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
+import { TILE_SIZE } from "../constants"
 
 class Game extends Phaser.Scene {
   private field!: Field
@@ -27,46 +28,47 @@ class Game extends Phaser.Scene {
     this.shop = new Shop(this)
     this.field = new Field(this)
     this.weaponGroup = new WeaponGroup(this)
-    this.selectedWeapon = new Phaser.GameObjects.Container(this)
-
+    this.selectedWeapon = this.add.container(0, 0)
+    this.physics.world.enable(this.selectedWeapon)
     this.field.bg
-      .on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
+      .on("pointermove", (e: any) => {
+        this.moveSelectedWeapon(e.x, e.y)
+      })
       .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
+
 
     for (const key in this.shop.weapons) {
       const name = key as WeaponName
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
 
-    this.physics.add.overlap(this.selectedWeapon, this.field.layer, this.overlapWeaponToTile, undefined, this)
-
-
     this.isPlaying = true
   }
 
   update() {
-    console.log(this.isOvetlap)
     if (!this.isPlaying)
       return
 
     this.wave.update(this.time.now, this.field.route)
   }
 
-  private overlapWeaponToTile(w: any, _: any) {
-    console.log("yo")
-    this.isOvetlap = true
-    w.setAlpha(0.3)
-  }
-
   private moveSelectedWeapon(x: number, y: number) {
-    this.isOvetlap = false
+    const tile = this.field.layer.getTileAt(Math.floor(x / TILE_SIZE), Math.floor(y / TILE_SIZE))
+    this.isOvetlap = tile.index !== 0
+
+    const alpha = this.isOvetlap ? 0.3 : 1
+    this.selectedWeapon.setAlpha(alpha)
     this.selectedWeapon.setPosition(x, y)
   }
 
   private buyWeapon(name: WeaponName, x: number, y: number) {
     this.selectedWeapon.removeAll(true)
 
-    this.selectedWeapon = this.shop.buy(this, name, x, y)
+    this.selectedWeapon
+      .setName(name)
+      .add(this.shop.buy(this, name))
+      .setPosition(x, y)
+
   }
 
   private putWeapon(x: number, y: number) {
