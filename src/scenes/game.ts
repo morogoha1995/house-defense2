@@ -38,7 +38,7 @@ class Game extends Phaser.Scene {
 
     for (const key in this.shop.weapons) {
       const name = key as WeaponName
-      this.shop.weapons[name].on("pointerdown", (e: any) => this.selectedWeapon.select(name))
+      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name))
     }
 
     this.isPlaying = true
@@ -84,6 +84,14 @@ class Game extends Phaser.Scene {
 
     const alpha = this.selectedWeapon.getIsOverlap() ? 0.3 : 1
     this.selectedWeapon.setAlpha(alpha)
+  }
+
+  private buyWeapon(name: WeaponName) {
+    const price = this.shop.canBuy(name, 50)
+    if (price < 0)
+      return
+
+    this.selectedWeapon.select(name)
   }
 
   private putWeapon(x: number, y: number) {

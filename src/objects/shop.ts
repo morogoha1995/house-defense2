@@ -34,27 +34,13 @@ export class Shop {
     }
   }
 
-  canBuy(name: WeaponName, gold: number): boolean {
-    const wd = weaponDatas[name]
-    return gold >= wd.price
-  }
-
-  buy(scene: Phaser.Scene, name: WeaponName) {
+  // 所持金と武器の値段を比較して、武器の値段以上の所持金があれば武器の値段を返す。無ければ-1が返る。
+  canBuy(name: WeaponName, gold: number): number {
     const wd = weaponDatas[name]
 
-    const w = scene.add
-      .sprite(0, 0, name)
-      .setName(name)
-      .setDisplaySize(wd.size, wd.size)
-
-    scene.physics.world.enable(w)
-
-    return [
-      scene.add
-        .circle(0, 0, wd.range, 0xffffff, 0.4)
-        .setName("range")
-      ,
-      w
-    ]
+    if (gold >= wd.price)
+      return wd.price
+    else
+      return -1
   }
 }
