@@ -1,12 +1,9 @@
-import { WeaponName } from "../../types/weapon";
-import { Weapon } from "./weapon";
-
-// TODO
 export class WeaponGroup extends Phaser.GameObjects.Group {
   constructor(scene: Phaser.Scene) {
-    super(scene)
+    super(scene, { runChildUpdate: true })
 
     scene.add.existing(this)
+    scene.physics.world.enable(this)
   }
 
   update() {

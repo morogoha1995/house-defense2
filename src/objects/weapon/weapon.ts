@@ -2,6 +2,7 @@ import WeaponDatas from "../../datas/weapon.json"
 import { WeaponName } from "../../types/weapon"
 
 export class Weapon extends Phaser.GameObjects.Sprite {
+  body!: Phaser.Physics.Arcade.Body
   protected enName = ""
   protected jaName = ""
   protected size = 0
@@ -20,6 +21,9 @@ export class Weapon extends Phaser.GameObjects.Sprite {
     this.atk = wd.atk
     this.price = wd.price
     this.range = wd.range
+
+    scene.add.existing(this)
+    scene.physics.world.enable(this)
   }
 
   update() {

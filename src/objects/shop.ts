@@ -39,14 +39,18 @@ export class Shop {
   buy(scene: Phaser.Scene, name: WeaponName) {
     const wd = weaponDatas[name]
 
+    const w = scene.add
+      .sprite(0, 0, name)
+      .setName(name)
+
+    scene.physics.world.enable(w)
+
     return [
       scene.add
         .circle(0, 0, wd.range, 0xffffff, 0.4)
         .setName("range")
       ,
-      scene.add
-        .sprite(0, 0, name)
-        .setName(name)
+      w
     ]
   }
 }
