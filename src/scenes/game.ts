@@ -5,6 +5,7 @@ import { WeaponName, ShootableName } from "../types/weapon"
 import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
 import { TILE_SIZE } from "../constants"
+import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
 
 class Game extends Phaser.Scene {
   private field!: Field
@@ -12,8 +13,11 @@ class Game extends Phaser.Scene {
   private weaponGroup!: WeaponGroup
   private isPlaying = false
   private shop!: Shop
-  private selectedWeapon!: Phaser.GameObjects.Container
-  private isOvetlap = false
+  private selectedWeapon!: SelectedWeapon
+  private isOvetlap: { [key: string]: boolean } = {
+    toWeapon: false,
+    toRoute: false,
+  }
 
   constructor() {
     super({ key: "game" })
@@ -28,7 +32,7 @@ class Game extends Phaser.Scene {
     this.shop = new Shop(this)
     this.field = new Field(this)
     this.weaponGroup = new WeaponGroup(this)
-    this.selectedWeapon = this.add.container(0, 0)
+    this.selectedWeapon = new SelectedWeapon(this)
     this.physics.world.enable(this.selectedWeapon)
     this.field.bg
       .on("pointermove", (e: any) => {
@@ -42,7 +46,7 @@ class Game extends Phaser.Scene {
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
 
-    this.physics.world.overlap(this.selectedWeapon, this.weaponGroup, this.overlapWeapons, undefined, this)
+    this.physics.add.overlap(this.selectedWeapon, this.weaponGroup, this.overlapWeapons, undefined, this)
 
     this.isPlaying = true
   }
@@ -55,14 +59,14 @@ class Game extends Phaser.Scene {
   }
 
   private overlapWeapons(sw: any, w: any) {
-    console.log("ya")
-    this.isOvetlap = true
+    this.isOvetlap.toWeapon = true
   }
 
   private moveSelectedWeapon(x: number, y: number) {
+    this.isOvetlap.toWeapon = false
     this.selectedWeapon.setPosition(x, y)
 
-    const sw = this.selectedWeapon.getByName(this.selectedWeapon.name) as any
+    const sw: any = this.selectedWeapon.getByName(this.selectedWeapon.name)
 
     if (!sw)
       return
@@ -75,17 +79,10 @@ class Game extends Phaser.Scene {
 
     const tile4 = this.field.layer.getTileAt(Math.floor(sw.body.right / TILE_SIZE), Math.floor(sw.body.top / TILE_SIZE))
 
-    this.isOvetlap = tile.index !== 0 || tile2.index !== 0 || tile3.index !== 0 || tile4.index !== 0
+    this.isOvetlap.toRoute = tile.index !== 0 || tile2.index !== 0 || tile3.index !== 0 || tile4.index !== 0
 
-    console.log(tile, tile2, tile3, tile4)
-
-    const alpha = this.isOvetlap ? 0.3 : 1
+    const alpha = this.isOvetlap.toRoute || this.isOvetlap.toWeapon ? 0.3 : 1
     this.selectedWeapon.setAlpha(alpha)
-
-  }
-
-  private overlapSelectedWeapon() {
-    this.isOvetlap = true
   }
 
   private buyWeapon(name: WeaponName, x: number, y: number) {
@@ -95,23 +92,17 @@ class Game extends Phaser.Scene {
       .setName(name)
       .add(this.shop.buy(this, name))
       .setPosition(x, y)
+      .setSize(TILE_SIZE, TILE_SIZE)
   }
 
   private putWeapon(x: number, y: number) {
     this.selectedWeapon.removeAll(true)
-    if (this.isOvetlap)
+    if (this.isOvetlap.toWeapon || this.isOvetlap.toRoute)
       return
 
     const name = this.selectedWeapon.name as ShootableName
 
     let weapon
-
-    /* TODO
-    if (name === "flame")
-      console.log()
-    else if (name === "rocket")
-      console.log()
-    */
 
     weapon = new Shootable(this, x, y, name)
 
