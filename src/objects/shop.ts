@@ -4,7 +4,7 @@ import { WIDTH, HEIGHT } from "../constants"
 
 // TODO
 export class Shop {
-  weapons: any = {}
+  weapons: { [key: string]: Phaser.GameObjects.Image } = {}
 
   constructor(scene: Phaser.Scene) {
     // create boxes
@@ -15,10 +15,8 @@ export class Shop {
     const addY = 60
     const maxCol = 3
 
-    console.log(maxCol)
-
     const wds: any = weaponDatas
-    for (const key in wds) {
+    for (let key in wds) {
       col++
       const wd = wds[key]
       scene.add.text(x + 35, y, `${wd.price}G`).setOrigin(0, 1)
@@ -36,12 +34,18 @@ export class Shop {
     }
   }
 
+  canBuy(name: WeaponName, gold: number): boolean {
+    const wd = weaponDatas[name]
+    return gold >= wd.price
+  }
+
   buy(scene: Phaser.Scene, name: WeaponName) {
     const wd = weaponDatas[name]
 
     const w = scene.add
       .sprite(0, 0, name)
       .setName(name)
+      .setDisplaySize(wd.size, wd.size)
 
     scene.physics.world.enable(w)
 

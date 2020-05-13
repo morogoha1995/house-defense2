@@ -14,10 +14,6 @@ class Game extends Phaser.Scene {
   private isPlaying = false
   private shop!: Shop
   private selectedWeapon!: SelectedWeapon
-  private isOvetlap: { [key: string]: boolean } = {
-    toWeapon: false,
-    toRoute: false,
-  }
 
   constructor() {
     super({ key: "game" })
@@ -33,7 +29,6 @@ class Game extends Phaser.Scene {
     this.field = new Field(this)
     this.weaponGroup = new WeaponGroup(this)
     this.selectedWeapon = new SelectedWeapon(this)
-    this.physics.world.enable(this.selectedWeapon)
     this.field.bg
       .on("pointermove", (e: any) => {
         this.moveSelectedWeapon(e.x, e.y)
@@ -43,10 +38,8 @@ class Game extends Phaser.Scene {
 
     for (const key in this.shop.weapons) {
       const name = key as WeaponName
-      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
+      this.shop.weapons[name].on("pointerdown", (e: any) => this.selectedWeapon.select(name))
     }
-
-    this.physics.add.overlap(this.selectedWeapon, this.weaponGroup, this.overlapWeapons, undefined, this)
 
     this.isPlaying = true
   }
@@ -55,52 +48,50 @@ class Game extends Phaser.Scene {
     if (!this.isPlaying)
       return
 
+    this.selectedWeapon.update()
     this.wave.update(this.time.now, this.field.route)
   }
 
-  private overlapWeapons(sw: any, w: any) {
-    this.isOvetlap.toWeapon = true
-  }
-
   private moveSelectedWeapon(x: number, y: number) {
-    this.isOvetlap.toWeapon = false
     this.selectedWeapon.setPosition(x, y)
-
-    const sw: any = this.selectedWeapon.getByName(this.selectedWeapon.name)
+    const sw: any = this.selectedWeapon.getWeapon()
 
     if (!sw)
       return
 
-    const tile = this.field.layer.getTileAt(Math.floor(sw.body.left / TILE_SIZE), Math.floor(sw.body.bottom / TILE_SIZE))
 
-    const tile2 = this.field.layer.getTileAt(Math.floor(sw.body.right / TILE_SIZE), Math.floor(sw.body.bottom / TILE_SIZE))
+    this.selectedWeapon.setIsOverlap("toWeapon", this.physics.overlap(sw, this.weaponGroup))
 
-    const tile3 = this.field.layer.getTileAt(Math.floor(sw.body.left / TILE_SIZE), Math.floor(sw.body.top / TILE_SIZE))
+    const top = Math.floor(sw.body.top / TILE_SIZE)
+    const right = Math.floor(sw.body.right / TILE_SIZE)
+    const bottom = Math.floor(sw.body.bottom / TILE_SIZE)
+    const left = Math.floor(sw.body.left / TILE_SIZE)
 
-    const tile4 = this.field.layer.getTileAt(Math.floor(sw.body.right / TILE_SIZE), Math.floor(sw.body.top / TILE_SIZE))
+    const tile = this.field.layer.getTileAt(left, bottom)
 
-    this.isOvetlap.toRoute = tile.index !== 0 || tile2.index !== 0 || tile3.index !== 0 || tile4.index !== 0
+    const tile2 = this.field.layer.getTileAt(right, bottom)
 
-    const alpha = this.isOvetlap.toRoute || this.isOvetlap.toWeapon ? 0.3 : 1
+    const tile3 = this.field.layer.getTileAt(left, top)
+
+    const tile4 = this.field.layer.getTileAt(right, top)
+
+    if (!tile || !tile2 || !tile3 || !tile4)
+      return
+
+    const v = tile.index !== 0 || tile2.index !== 0 || tile3.index !== 0 || tile4.index !== 0
+
+    this.selectedWeapon.setIsOverlap("toRoute", v)
+
+    const alpha = this.selectedWeapon.getIsOverlap() ? 0.3 : 1
     this.selectedWeapon.setAlpha(alpha)
   }
 
-  private buyWeapon(name: WeaponName, x: number, y: number) {
-    this.selectedWeapon.removeAll(true)
-
-    this.selectedWeapon
-      .setName(name)
-      .add(this.shop.buy(this, name))
-      .setPosition(x, y)
-      .setSize(TILE_SIZE, TILE_SIZE)
-  }
-
   private putWeapon(x: number, y: number) {
-    this.selectedWeapon.removeAll(true)
-    if (this.isOvetlap.toWeapon || this.isOvetlap.toRoute)
+    this.selectedWeapon.removeAll()
+    if (this.selectedWeapon.getIsOverlap())
       return
 
-    const name = this.selectedWeapon.name as ShootableName
+    const name = <ShootableName>this.selectedWeapon.name
 
     let weapon
 

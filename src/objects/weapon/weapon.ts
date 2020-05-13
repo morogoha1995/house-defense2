@@ -17,7 +17,7 @@ export class Weapon extends Phaser.GameObjects.Sprite {
 
     this.enName = name
     this.jaName = wd.ja_name
-    this.size = wd.size
+    this.setDisplaySize(wd.size, wd.size)
     this.atk = wd.atk
     this.price = wd.price
     this.range = wd.range
