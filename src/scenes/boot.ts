@@ -14,6 +14,9 @@ class Boot extends Phaser.Scene {
       .image("ghost", "assets/imgs/enemy/ghost.png")
       .image("golem", "assets/imgs/enemy/golem.png")
       .image("god", "assets/imgs/enemy/god.png")
+      .image("stoneBullet", "assets/imgs/weapon/bullet/stone-bullet.png")
+      .image("arrowBullet", "assets/imgs/weapon/bullet/arrow-bullet.png")
+      .image("rifleBullet", "assets/imgs/weapon/bullet/rifle-bullet.png")
       .spritesheet("tileset", "assets/imgs/tileset.png", { frameWidth: 32, frameHeight: 32 })
 
   }
