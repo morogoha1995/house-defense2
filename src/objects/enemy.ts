@@ -3,6 +3,7 @@ import { EnemyName } from "../types/enemy"
 
 
 export class Enemy extends Phaser.GameObjects.Sprite {
+  body!: Phaser.Physics.Arcade.Body
   private hp: number
   private speed: number
   private gold: number
@@ -23,6 +24,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.setOrigin(0, 1)
 
     scene.add.existing(this)
+    scene.physics.world.enable(this)
   }
 
   move(route: Phaser.Curves.Path) {
@@ -31,15 +33,17 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     this.setPosition(this.path.vec.x, this.path.vec.y)
   }
 
+  damaged(atk: number) {
+    this.hp -= atk
+  }
+
   isDead(): boolean {
     return this.hp <= 0 || this.path.t >= 1
   }
 
   die() {
-    this.setActive(false)
-    this.setVisible(false)
+    this.destroy()
   }
-
 
   getGold(): number {
     return this.gold

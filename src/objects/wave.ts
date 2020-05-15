@@ -8,7 +8,7 @@ export class Wave {
   private addPerSpawn = 2000
   private maxSpawnCount = 10
   private spawnCount = 1
-  private enemyGroup: EnemyGroup
+  enemyGroup: EnemyGroup
 
   constructor(scene: Phaser.Scene) {
     this.enemyGroup = new EnemyGroup(scene)

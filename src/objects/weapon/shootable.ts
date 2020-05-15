@@ -1,38 +1,43 @@
 import shootableDatas from "../../datas/shootable.json"
 import { Weapon } from "./weapon"
-import { ShootableName } from "../../types/weapon"
-import { Bullet } from "./bullet"
+import { ShootableName, BulletConfig } from "../../types/weapon"
+import { Enemy } from "../enemy"
 
 // TODO
 export class Shootable extends Weapon {
   private interval: number
-  private bulletSpeed: number
   private nextAttack: number
-  private bullets: Phaser.GameObjects.Group
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: ShootableName) {
     super(scene, x, y, name)
 
     const sd = shootableDatas[name]
     this.interval = sd.interval
-    this.bulletSpeed = sd.bulletSpeed
     this.nextAttack = scene.time.now
-
-    this.bullets = scene.add.group()
   }
+
+  update(e: Enemy) {
+    if (this.canAttack(e))
+      this.attack(e)
+  }
+
 
   // TODO
-  attack(ePos: Phaser.Math.Vector2) {
-    if (!this.canAttack())
-      return
+  attack(e: Enemy) {
+    const x = e.body.center.x
+    const y = e.body.center.y
+    const bullet = this.scene.add.sprite(x, y, `${this.enName}Bullet`)
+    const rad = Phaser.Math.Angle.Between(this.x, this.y, x, y)
+    bullet.setAngle(Phaser.Math.RadToDeg(rad))
 
-    const bullet = new Bullet(this.scene, this.x, this.y, this.enName, { atk: this.atk, speed: this.bulletSpeed })
-    this.bullets.add(bullet)
+    e.damaged(this.atk)
 
-    this.nextAttack += this.interval
+    this.scene.time.addEvent({ delay: this.interval, callback: () => bullet.destroy() })
+
+    this.nextAttack = this.scene.time.now + this.interval
   }
 
-  private canAttack(): boolean {
-    return this.scene.time.now > this.nextAttack
+  private canAttack(e: Enemy): boolean {
+    return this.scene.time.now > this.nextAttack && this.isInRange(e)
   }
 }

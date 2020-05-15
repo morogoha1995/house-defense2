@@ -1,10 +1,16 @@
+import { EnemyGroup } from "../enemyGroup"
+
 export class WeaponGroup extends Phaser.GameObjects.Group {
   constructor(scene: Phaser.Scene) {
-    super(scene, { runChildUpdate: true })
+    super(scene)
   }
 
-  update() {
-    this.attack()
+  update(eg: EnemyGroup) {
+    eg.children.iterate((e: any) => {
+      this.children.iterate((w: any) => {
+        w.update(e)
+      })
+    })
   }
 
   private attack() {

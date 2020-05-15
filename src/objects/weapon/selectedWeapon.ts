@@ -52,7 +52,6 @@ export class SelectedWeapon extends Phaser.GameObjects.Container {
   }
 
   setIsOverlap(key: string, value: boolean) {
-    console.log(key, value)
     this.isOverlap[key] = value
   }
 }

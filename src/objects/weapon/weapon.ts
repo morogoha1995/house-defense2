@@ -1,5 +1,7 @@
 import WeaponDatas from "../../datas/weapon.json"
 import { WeaponName } from "../../types/weapon"
+import { Enemy } from "../enemy"
+import { EnemyGroup } from "../enemyGroup"
 
 export class Weapon extends Phaser.GameObjects.Sprite {
   body!: Phaser.Physics.Arcade.Body
@@ -8,7 +10,7 @@ export class Weapon extends Phaser.GameObjects.Sprite {
   protected size = 0
   protected atk = 0
   protected price = 0
-  protected range: number
+  protected range: Phaser.GameObjects.Zone
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: WeaponName) {
     super(scene, x, y, name)
@@ -20,13 +22,14 @@ export class Weapon extends Phaser.GameObjects.Sprite {
     this.setDisplaySize(wd.size, wd.size)
     this.atk = wd.atk
     this.price = wd.price
-    this.range = wd.range
+    this.range = scene.add.zone(x, y, wd.range, wd.range)
+
 
     scene.add.existing(this)
-    scene.physics.world.enable(this)
+    scene.physics.world.enable([this, this.range])
   }
 
-  update() {
-
+  protected isInRange(e: Enemy): boolean {
+    return this.scene.physics.world.overlap(this.range, e)
   }
 }

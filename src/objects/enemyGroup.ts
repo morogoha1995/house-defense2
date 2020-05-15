@@ -11,7 +11,7 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
   }
 
   private move(path: Phaser.Curves.Path) {
-    this.children.iterate((e: any) => {
+    this.children.each((e: any) => {
       e.move(path)
 
       if (e.isDead())
