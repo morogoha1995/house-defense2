@@ -1,6 +1,6 @@
 import shootableDatas from "../../datas/shootable.json"
 import { Weapon } from "./weapon"
-import { ShootableName, BulletConfig } from "../../types/weapon"
+import { ShootableName } from "../../types/weapon"
 import { Enemy } from "../enemy"
 
 // TODO
