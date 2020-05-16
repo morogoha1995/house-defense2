@@ -2,7 +2,7 @@ import EnemyDatas from "../datas/enemy.json"
 import { EnemyName } from "../types/enemy"
 
 
-export class Enemy extends Phaser.GameObjects.Sprite {
+export class Enemy extends Phaser.GameObjects.Image {
   body!: Phaser.Physics.Arcade.Body
   private hp: number
   private speed: number

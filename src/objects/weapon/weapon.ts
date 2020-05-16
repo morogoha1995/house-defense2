@@ -1,16 +1,14 @@
 import WeaponDatas from "../../datas/weapon.json"
 import { WeaponName } from "../../types/weapon"
 import { Enemy } from "../enemy"
-import { EnemyGroup } from "../enemyGroup"
 
-export class Weapon extends Phaser.GameObjects.Sprite {
+export class Weapon extends Phaser.GameObjects.Image {
   body!: Phaser.Physics.Arcade.Body
-  protected enName = ""
-  protected jaName = ""
-  protected size = 0
-  protected atk = 0
-  protected price = 0
-  protected range: Phaser.GameObjects.Zone
+  protected enName: string
+  protected jaName: string
+  protected atk: number
+  protected price: number
+  protected range: Phaser.GameObjects.Arc
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: WeaponName) {
     super(scene, x, y, name)
@@ -22,8 +20,7 @@ export class Weapon extends Phaser.GameObjects.Sprite {
     this.setDisplaySize(wd.size, wd.size)
     this.atk = wd.atk
     this.price = wd.price
-    this.range = scene.add.zone(x, y, wd.range, wd.range)
-
+    this.range = scene.add.circle(x, y, wd.range)
 
     scene.add.existing(this)
     scene.physics.world.enable([this, this.range])
