@@ -7,16 +7,22 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
   }
 
   update(path: Phaser.Curves.Path) {
-    this.move(path)
+    this.children.iterate((e: any) => {
+      e.move(path)
+    })
   }
 
-  private move(path: Phaser.Curves.Path) {
-    this.children.each((e: any) => {
-      e.move(path)
+  checkDeath(): number {
+    let gold = 0
 
-      if (e.isDead())
-        e.die()
+    this.children.each((e: any) => {
+      if (e.isDead()) {
+        e.destroy()
+        gold += e.getGold()
+      }
     })
+
+    return gold
   }
 
   spawn(name: EnemyName) {

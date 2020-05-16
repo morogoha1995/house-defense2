@@ -19,6 +19,7 @@ export class Shootable extends Weapon {
     this.bullet = scene.add.image(x, y, `${name}Bullet`)
       .setVisible(false)
       .setOrigin(0.5, 0)
+      .setScale(2)
     this.ballistic = scene.add.line(0, 0, 0, 0, 0)
       .setVisible(false)
       .setStrokeStyle(1, 0x333333)
@@ -30,8 +31,7 @@ export class Shootable extends Weapon {
   }
 
 
-  // TODO
-  attack(e: Enemy) {
+  private attack(e: Enemy) {
     e.damaged(this.atk)
 
     const x = e.body.center.x

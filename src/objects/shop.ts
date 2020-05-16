@@ -4,6 +4,7 @@ import { WIDTH, HEIGHT } from "../constants"
 
 // TODO
 export class Shop {
+  private gold = 0
   weapons: { [key: string]: Phaser.GameObjects.Image } = {}
 
   constructor(scene: Phaser.Scene) {
@@ -34,13 +35,19 @@ export class Shop {
     }
   }
 
-  // 所持金と武器の値段を比較して、武器の値段以上の所持金があれば武器の値段を返す。無ければ-1が返る。
-  canBuy(name: WeaponName, gold: number): number {
-    const wd = weaponDatas[name]
+  addGold(gold: number) {
+    this.gold += gold
+  }
 
-    if (gold >= wd.price)
-      return wd.price
-    else
-      return -1
+  // 返り値は購入に成功したかのboolean
+  buy(name: WeaponName): boolean {
+    const wd = weaponDatas[name]
+    const price = wd.price
+
+    if (this.gold >= price) {
+      this.gold -= price
+      return true
+    } else
+      return false
   }
 }

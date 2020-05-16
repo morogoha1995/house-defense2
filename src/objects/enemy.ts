@@ -41,10 +41,6 @@ export class Enemy extends Phaser.GameObjects.Image {
     return this.hp <= 0 || this.path.t >= 1
   }
 
-  die() {
-    this.destroy()
-  }
-
   getGold(): number {
     return this.gold
   }

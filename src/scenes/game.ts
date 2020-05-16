@@ -50,7 +50,14 @@ class Game extends Phaser.Scene {
 
     this.selectedWeapon.update()
     this.wave.update(this.time.now, this.field.route)
+    this.checkEnemyDeath()
     this.weaponGroup.update(this.wave.enemyGroup)
+  }
+
+  private checkEnemyDeath() {
+    const gold = this.wave.enemyGroup.checkDeath()
+    if (gold > 0)
+      this.shop.addGold(gold)
   }
 
   private moveSelectedWeapon(x: number, y: number) {
@@ -88,8 +95,8 @@ class Game extends Phaser.Scene {
   }
 
   private buyWeapon(name: WeaponName) {
-    const price = this.shop.canBuy(name, 100)
-    if (price < 0)
+    const success = this.shop.buy(name)
+    if (!success)
       return
 
     this.selectedWeapon.select(name)

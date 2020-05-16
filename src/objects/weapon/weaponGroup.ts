@@ -12,10 +12,4 @@ export class WeaponGroup extends Phaser.GameObjects.Group {
       })
     })
   }
-
-  private attack() {
-    this.children.iterate((w: any) => {
-      w.attack()
-    })
-  }
 }
