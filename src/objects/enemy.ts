@@ -1,5 +1,6 @@
 import EnemyDatas from "../datas/enemy.json"
 import { EnemyName } from "../types/enemy"
+import { createFontStyle } from "../utils/text"
 
 
 export class Enemy extends Phaser.GameObjects.Image {
@@ -39,7 +40,40 @@ export class Enemy extends Phaser.GameObjects.Image {
     return this.hp <= 0 || this.path.t >= 1
   }
 
-  getGold(): number {
+  private getGold(): number {
     return this.gold
+  }
+
+  die(): number {
+    this.deathAnim()
+
+    return this.getGold()
+  }
+
+  private deathAnim() {
+    const goldText = this.scene.add.text(this.x, this.y, `+ ${this.gold}G`, createFontStyle("orange"))
+      .setScale(0)
+      .setOrigin(0.5)
+
+    this.scene.add.tween({
+      targets: this,
+      angle: 40,
+      y: this.y + 10,
+      x: this.x + 10,
+      alpha: 0,
+      duration: 500
+    })
+
+    this.scene.add.tween({
+      targets: goldText,
+      scale: 1,
+      y: this.y - 30,
+      duration: 400,
+      yoyo: true,
+      onComplete: () => {
+        this.destroy()
+        goldText.destroy()
+      }
+    })
   }
 }

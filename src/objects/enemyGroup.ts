@@ -17,8 +17,8 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
 
     this.children.each((e: any) => {
       if (e.isDead()) {
-        e.destroy()
-        gold += e.getGold()
+        this.remove(e)
+        gold += e.die()
       }
     })
 

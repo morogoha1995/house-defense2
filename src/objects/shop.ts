@@ -2,7 +2,6 @@ import weaponDatas from "../datas/weapon.json"
 import { WeaponName } from "../types/weapon"
 import { WIDTH, HEIGHT } from "../constants"
 
-// TODO
 export class Shop {
   private gold = 500
   private goldText: Phaser.GameObjects.Text
@@ -19,7 +18,7 @@ export class Shop {
     const maxCol = 3
 
     col++
-    this.goldText = scene.add.text(x, y, `${this.gold}`)
+    this.goldText = scene.add.text(x, y, `所持金: ${this.gold}G`)
     x += addX
 
     const wds: any = weaponDatas
@@ -52,7 +51,7 @@ export class Shop {
   }
 
   private changeGoldText() {
-    this.goldText.setText(`${this.gold}`)
+    this.goldText.setText(`所持金: ${this.gold}G`)
   }
 
   minusGold(value: number) {
