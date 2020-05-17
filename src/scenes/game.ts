@@ -25,7 +25,6 @@ class Game extends Phaser.Scene {
 
   create() {
     this.wave = new Wave(this)
-    this.shop = new Shop(this)
     this.field = new Field(this)
     this.weaponGroup = new WeaponGroup(this)
     this.selectedWeapon = new SelectedWeapon(this)
@@ -35,6 +34,7 @@ class Game extends Phaser.Scene {
       })
       .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
 
+    this.shop = new Shop(this)
 
     for (const key in this.shop.weapons) {
       const name = key as WeaponName
@@ -95,11 +95,8 @@ class Game extends Phaser.Scene {
   }
 
   private buyWeapon(name: WeaponName) {
-    const success = this.shop.buy(name)
-    if (!success)
-      return
-
-    this.selectedWeapon.select(name)
+    if (this.shop.canBuy(name))
+      this.selectedWeapon.select(name)
   }
 
   private putWeapon(x: number, y: number) {
@@ -114,6 +111,7 @@ class Game extends Phaser.Scene {
     weapon = new Shootable(this, x, y, name)
 
     this.weaponGroup.add(weapon)
+    this.shop.putWeapon(name)
   }
 }
 

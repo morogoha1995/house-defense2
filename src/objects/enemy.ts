@@ -21,8 +21,6 @@ export class Enemy extends Phaser.GameObjects.Image {
     this.speed = enemyData.speed
     this.gold = enemyData.gold
 
-    this.setOrigin(0, 1)
-
     scene.add.existing(this)
     scene.physics.world.enable(this)
   }
