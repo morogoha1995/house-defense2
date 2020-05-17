@@ -48,10 +48,17 @@ class Game extends Phaser.Scene {
     if (!this.isPlaying)
       return
 
+    this.checkEnemyDeath()
+    this.checkWave()
+
     this.selectedWeapon.update()
     this.wave.update(this.time.now, this.field.route)
-    this.checkEnemyDeath()
     this.weaponGroup.update(this.wave.enemyGroup)
+  }
+
+  private checkWave() {
+    if (this.wave.isToNext())
+      this.wave.goToNext(this)
   }
 
   private checkEnemyDeath() {

@@ -8,6 +8,7 @@ export class Wave {
   private addPerSpawn = 2000
   private maxSpawnCount = 10
   private spawnCount = 1
+  private isStop = false
   enemyGroup: EnemyGroup
 
   constructor(scene: Phaser.Scene) {
@@ -15,16 +16,32 @@ export class Wave {
   }
 
   update(time: number, path: Phaser.Curves.Path) {
+    if (this.isStop)
+      return
+
     this.spawn(time)
     this.enemyGroup.update(path)
   }
 
-  private goToNext() {
-    this.current++
-    this.enemyGroup.clear(true, true)
+  isToNext(): boolean {
+    return this.spawnCount >= this.maxSpawnCount && this.enemyGroup.getLength() <= 0 && !this.isStop
+  }
 
-    if (this.current % 5 === 0)
-      this.upDifficulty()
+  goToNext(scene: Phaser.Scene) {
+    this.isStop = true
+
+    scene.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        this.isStop = false
+        //this.nextSpawn = 0
+        this.spawnCount = 1
+        this.current++
+
+        if (this.current % 5 === 0)
+          this.upDifficulty()
+      }
+    })
   }
 
   private upDifficulty() {
@@ -40,7 +57,7 @@ export class Wave {
     if (this.spawnCount >= this.maxSpawnCount || time <= this.nextSpawn)
       return
 
-
+    console.log(this.current, this.enemyGroup.getLength())
     const enemyName = this.determineEnemyName()
     this.enemyGroup.spawn(enemyName)
     this.spawnCount++
