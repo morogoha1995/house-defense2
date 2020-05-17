@@ -29,4 +29,8 @@ export class Weapon extends Phaser.GameObjects.Image {
   protected isInRange(e: Enemy): boolean {
     return this.scene.physics.world.overlap(this.range, e)
   }
+
+  getPrice(): number {
+    return this.price
+  }
 }

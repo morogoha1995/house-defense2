@@ -16,22 +16,22 @@
   "rifle": {
     "ja_name": "軍人",
     "size": 40,
-    "atk": 2,
+    "atk": 1,
     "price": 100,
     "range": 60
   },
   "rocket": {
     "ja_name": "ロケット",
-    "size": 40,
+    "size": 50,
     "atk": 2,
-    "price": 100,
+    "price": 200,
     "range": 60
   },
   "flame": {
     "ja_name": "火炎放射器",
-    "size": 40,
-    "atk": 2,
-    "price": 100,
+    "size": 50,
+    "atk": 1,
+    "price": 500,
     "range": 60
   }
 }

@@ -111,7 +111,7 @@ class Game extends Phaser.Scene {
     weapon = new Shootable(this, x, y, name)
 
     this.weaponGroup.add(weapon)
-    this.shop.putWeapon(name)
+    this.shop.minusGold(weapon.getPrice())
   }
 }
 
