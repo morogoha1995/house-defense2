@@ -3,7 +3,6 @@ import { Weapon } from "./weapon"
 import { ShootableName } from "../../types/weapon"
 import { Enemy } from "../enemy"
 
-// TODO
 export class Shootable extends Weapon {
   private interval: number
   private nextAttack: number
