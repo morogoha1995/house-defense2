@@ -9,6 +9,9 @@ export class Weapon extends Phaser.GameObjects.Image {
   protected atk: number
   protected price: number
   protected range: Phaser.GameObjects.Arc
+  protected bullet: Phaser.GameObjects.Image
+  protected interval: number
+  protected nextAttack: number
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: WeaponName) {
     super(scene, x, y, name)
@@ -21,6 +24,11 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.atk = wd.atk
     this.price = wd.price
     this.range = scene.add.circle(x, y, wd.range)
+    this.bullet = scene.add.image(x, y, `${name}Bullet`)
+      .setVisible(false)
+
+    this.interval = wd.interval
+    this.nextAttack = scene.time.now
 
     scene.add.existing(this)
     scene.physics.world.enable([this, this.range])
@@ -32,5 +40,13 @@ export class Weapon extends Phaser.GameObjects.Image {
 
   getPrice(): number {
     return this.price
+  }
+
+  protected calcNextAttack() {
+    this.nextAttack = this.scene.time.now + this.interval
+  }
+
+  protected canAttack(e: Enemy): boolean {
+    return this.scene.time.now > this.nextAttack && this.isInRange(e)
   }
 }

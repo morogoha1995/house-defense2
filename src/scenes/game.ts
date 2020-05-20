@@ -6,6 +6,8 @@ import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
 import { TILE_SIZE } from "../constants"
 import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
+import { Explosive } from "../objects/weapon/explosive"
+import { Extensive } from "../objects/weapon/extensive"
 
 class Game extends Phaser.Scene {
   private field!: Field
@@ -107,15 +109,20 @@ class Game extends Phaser.Scene {
   }
 
   private putWeapon(x: number, y: number) {
-    this.selectedWeapon.removeAll()
+    this.selectedWeapon.removeAll(true)
     if (this.selectedWeapon.getIsOverlap())
       return
 
-    const name = <ShootableName>this.selectedWeapon.name
+    const name = <WeaponName>this.selectedWeapon.name
 
     let weapon
 
-    weapon = new Shootable(this, x, y, name)
+    if (name === "rocket")
+      weapon = new Explosive(this, x, y, name)
+    else if (name === "flame")
+      weapon = new Extensive(this, x, y, name)
+    else
+      weapon = new Shootable(this, x, y, name)
 
     this.weaponGroup.add(weapon)
     this.shop.minusGold(weapon.getPrice())

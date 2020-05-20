@@ -23,8 +23,6 @@ export class Shop {
 
     const wds: any = weaponDatas
     for (let key in wds) {
-      if (key === "flame" || key === "rocket")
-        continue
       col++
       const wd = wds[key]
 

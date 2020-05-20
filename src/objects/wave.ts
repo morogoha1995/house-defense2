@@ -57,7 +57,6 @@ export class Wave {
     if (this.spawnCount >= this.maxSpawnCount || time <= this.nextSpawn)
       return
 
-    console.log(this.current, this.enemyGroup.getLength())
     const enemyName = this.determineEnemyName()
     this.enemyGroup.spawn(enemyName)
     this.spawnCount++

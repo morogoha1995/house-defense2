@@ -4,19 +4,12 @@ import { ShootableName } from "../../types/weapon"
 import { Enemy } from "../enemy"
 
 export class Shootable extends Weapon {
-  private interval: number
-  private nextAttack: number
-  private bullet: Phaser.GameObjects.Image
   private ballistic: Phaser.GameObjects.Line
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: ShootableName) {
     super(scene, x, y, name)
 
-    const sd = shootableDatas[name]
-    this.interval = sd.interval
-    this.nextAttack = scene.time.now
-    this.bullet = scene.add.image(x, y, `${name}Bullet`)
-      .setVisible(false)
+    this.bullet
       .setOrigin(0.5, 0)
       .setScale(2)
     this.ballistic = scene.add.line(0, 0, 0, 0, 0)
@@ -64,10 +57,6 @@ export class Shootable extends Weapon {
       }
     })
 
-    this.nextAttack = this.scene.time.now + this.interval
-  }
-
-  private canAttack(e: Enemy): boolean {
-    return this.scene.time.now > this.nextAttack && this.isInRange(e)
+    this.calcNextAttack()
   }
 }
