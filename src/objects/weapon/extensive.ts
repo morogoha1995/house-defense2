@@ -1,7 +1,6 @@
 import { Weapon } from "./weapon"
 import { ExtensiveName } from "../../types/weapon"
 import { Enemy } from "../enemy"
-import { TILE_SIZE } from "../../constants"
 
 export class Extensive extends Weapon {
   constructor(scene: Phaser.Scene, x: number, y: number, name: ExtensiveName) {

@@ -1,11 +1,5 @@
 {
-  "stone": {
-    "interval": 500
-  },
-  "arrow": {
-    "interval": 800
-  },
-  "rifle": {
-    "interval": 80
-  }
+  "stone": {},
+  "arrow": {},
+  "rifle": {}
 }

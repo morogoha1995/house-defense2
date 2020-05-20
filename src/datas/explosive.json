@@ -1,6 +1,5 @@
 {
   "rocket": {
-    "interval": 800,
     "extent": 60
   }
 }
