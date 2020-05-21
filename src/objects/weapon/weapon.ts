@@ -4,7 +4,6 @@ import { Enemy } from "../enemy"
 import { EnemyGroup } from "../enemyGroup"
 
 export class Weapon extends Phaser.GameObjects.Image {
-  body!: Phaser.Physics.Arcade.Body
   protected enName: string
   protected jaName: string
   protected atk: number
@@ -47,7 +46,11 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.nextAttack = this.scene.time.now + this.interval
   }
 
+  protected isReloaded(): boolean {
+    return this.scene.time.now > this.nextAttack
+  }
+
   protected canAttack(e: Enemy): boolean {
-    return this.scene.time.now > this.nextAttack && this.isInRange(e)
+    return this.isReloaded() && this.isInRange(e)
   }
 }

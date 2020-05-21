@@ -25,7 +25,7 @@
   },
   "rocket": {
     "ja_name": "ロケットランチャー",
-    "size": 60,
+    "size": 55,
     "atk": 2,
     "price": 300,
     "range": 80,
@@ -33,7 +33,7 @@
   },
   "flame": {
     "ja_name": "火炎放射器",
-    "size": 100,
+    "size": 32,
     "atk": 1,
     "price": 500,
     "range": 100,
