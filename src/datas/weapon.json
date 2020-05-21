@@ -5,7 +5,7 @@
     "atk": 1,
     "price": 10,
     "range": 50,
-    "interval": 500
+    "interval": 800
   },
   "arrow": {
     "ja_name": "バリスタ",
@@ -13,7 +13,7 @@
     "atk": 3,
     "price": 50,
     "range": 110,
-    "interval": 800
+    "interval": 1200
   },
   "rifle": {
     "ja_name": "軍人",
@@ -21,11 +21,11 @@
     "atk": 1,
     "price": 100,
     "range": 60,
-    "interval": 80
+    "interval": 160
   },
   "rocket": {
     "ja_name": "ロケットランチャー",
-    "size": 60,
+    "size": 50,
     "atk": 2,
     "price": 300,
     "range": 80,
@@ -33,10 +33,10 @@
   },
   "flame": {
     "ja_name": "火炎放射器",
-    "size": 100,
+    "size": 80,
     "atk": 1,
     "price": 500,
     "range": 100,
-    "interval": 50
+    "interval": 80
   }
 }

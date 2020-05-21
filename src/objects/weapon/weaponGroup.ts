@@ -6,10 +6,8 @@ export class WeaponGroup extends Phaser.GameObjects.Group {
   }
 
   update(eg: EnemyGroup) {
-    eg.children.iterate((e: any) => {
-      this.children.iterate((w: any) => {
-        w.update(e)
-      })
+    this.children.iterate((w: any) => {
+      w.update(eg)
     })
   }
 }

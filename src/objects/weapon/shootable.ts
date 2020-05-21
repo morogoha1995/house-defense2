@@ -1,6 +1,7 @@
 import { Weapon } from "./weapon"
 import { ShootableName } from "../../types/weapon"
 import { Enemy } from "../enemy"
+import { EnemyGroup } from "../enemyGroup"
 
 export class Shootable extends Weapon {
   private ballistic: Phaser.GameObjects.Line
@@ -16,9 +17,11 @@ export class Shootable extends Weapon {
       .setStrokeStyle(1, 0x333333)
   }
 
-  update(e: Enemy) {
-    if (this.canAttack(e))
-      this.attack(e)
+  update(eg: EnemyGroup) {
+    eg.children.iterate((e: any) => {
+      if (this.canAttack(e))
+        this.attack(e)
+    })
   }
 
 
@@ -41,7 +44,7 @@ export class Shootable extends Weapon {
     const ba = this.ballistic
     ba
       .setTo(this.x, this.y, x, y)
-      .setAlpha(0.6)
+      .setAlpha(0.3)
       .setVisible(true)
 
     const animationTime = this.interval / 4

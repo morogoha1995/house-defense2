@@ -1,6 +1,7 @@
 import WeaponDatas from "../../datas/weapon.json"
 import { WeaponName } from "../../types/weapon"
 import { Enemy } from "../enemy"
+import { EnemyGroup } from "../enemyGroup"
 
 export class Weapon extends Phaser.GameObjects.Image {
   body!: Phaser.Physics.Arcade.Body
@@ -35,7 +36,7 @@ export class Weapon extends Phaser.GameObjects.Image {
   }
 
   protected isInRange(e: Enemy): boolean {
-    return this.scene.physics.world.overlap(this.range, e)
+    return this.scene.physics.overlap(this.range, e)
   }
 
   getPrice(): number {

@@ -6,6 +6,7 @@ export class SelectedWeapon extends Phaser.GameObjects.Container {
     toWeapon: false,
     toRoute: false,
   }
+  private isSelected = false
 
   constructor(scene: Phaser.Scene) {
     super(scene)
@@ -13,21 +14,22 @@ export class SelectedWeapon extends Phaser.GameObjects.Container {
     scene.add.existing(this)
   }
 
-  update() {
-    this.initIsOverlap()
-  }
-
-  private initIsOverlap() {
-    for (const key in this.isOverlap)
-      this.isOverlap[key] = false
-  }
-
   getWeapon() {
     return this.getByName(this.name)
   }
 
-  select(name: WeaponName) {
+  rm() {
     this.removeAll(true)
+    this.isSelected = false
+  }
+
+  getIsSelected(): boolean {
+    return this.isSelected
+  }
+
+  select(name: WeaponName) {
+    this.rm()
+    this.isSelected = true
 
     const wd = weaponDatas[name]
     this.name = name
