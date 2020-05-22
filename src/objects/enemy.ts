@@ -12,6 +12,7 @@ export class Enemy extends Phaser.GameObjects.Image {
     t: 0,
     vec: new Phaser.Math.Vector2()
   }
+  private isDuringHitAnims = false
 
   constructor(scene: Phaser.Scene, name: EnemyName) {
     super(scene, 0, 0, name)
@@ -34,6 +35,21 @@ export class Enemy extends Phaser.GameObjects.Image {
 
   damaged(atk: number) {
     this.hp -= atk
+    this.damagedAnims()
+  }
+
+  private damagedAnims() {
+    if (this.isDuringHitAnims)
+      return
+
+    this.isDuringHitAnims = true
+    this.scene.add.tween({
+      targets: this,
+      angle: 30,
+      duration: 60,
+      yoyo: true,
+      onComplete: () => this.isDuringHitAnims = false
+    })
   }
 
   isDead(): boolean {

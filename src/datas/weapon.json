@@ -34,7 +34,7 @@
   "flame": {
     "ja_name": "火炎放射器",
     "size": 32,
-    "atk": 1,
+    "atk": 0.01,
     "price": 500,
     "range": 100,
     "interval": 80
