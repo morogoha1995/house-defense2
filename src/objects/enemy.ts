@@ -39,7 +39,7 @@ export class Enemy extends Phaser.GameObjects.Image {
   }
 
   private damagedAnims() {
-    if (this.isDuringHitAnims)
+    if (this.isDuringHitAnims || this.hp <= 0)
       return
 
     this.isDuringHitAnims = true

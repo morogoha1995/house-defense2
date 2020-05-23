@@ -6,14 +6,14 @@ import { EnemyGroup } from "../enemyGroup"
 // incomplete
 export class Extensive extends Weapon {
   private attackCollision: Phaser.GameObjects.Arc
+  private isDuringFlameAnims = false
 
   constructor(scene: Phaser.Scene, x: number, y: number, name: ExtensiveName) {
     super(scene, x, y, name)
 
     this.bullet
-      .setAlpha(0.6)
+      .setAlpha(0.4)
       .setOrigin(0.5, 1)
-      .setDepth(5)
       .setDisplaySize(100, 110)
 
     this.attackCollision = scene.add.circle(x, y, 50)
@@ -29,6 +29,7 @@ export class Extensive extends Weapon {
     eg.children.iterate((e: any) => {
       if (!isInRangeEvenOne && this.isInRange(e)) {
         this.rotate(e)
+        this.animateFlame()
         isInRangeEvenOne = true
       }
 
@@ -42,6 +43,21 @@ export class Extensive extends Weapon {
     this.bullet.setVisible(isInRangeEvenOne)
     if (isAttack)
       this.calcNextAttack()
+  }
+
+  private animateFlame() {
+    if (this.isDuringFlameAnims)
+      return
+
+    this.isDuringFlameAnims = true
+
+    this.scene.add.tween({
+      targets: this.bullet,
+      alpha: 0.6,
+      duration: 200,
+      yoyo: true,
+      onComplete: () => this.isDuringFlameAnims = false
+    })
   }
 
   private rotate(e: Enemy) {

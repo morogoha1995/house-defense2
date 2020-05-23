@@ -26,6 +26,7 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.range = scene.add.circle(x, y, wd.range)
     this.bullet = scene.add.image(x, y, `${name}Bullet`)
       .setVisible(false)
+      .setDepth(5)
 
     this.interval = wd.interval
     this.nextAttack = scene.time.now

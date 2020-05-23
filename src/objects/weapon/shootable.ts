@@ -39,7 +39,6 @@ export class Shootable extends Weapon {
       .setAngle(deg)
       .setAlpha(1)
       .setVisible(true)
-      .setDepth(5)
 
     const ba = this.ballistic
     ba
