@@ -8,10 +8,7 @@ export class Enemy extends Phaser.GameObjects.Image {
   private hp: number
   private speed: number
   private gold: number
-  private path = {
-    t: 0,
-    vec: new Phaser.Math.Vector2()
-  }
+  private pathT = 0
   private isDuringHitAnims = false
 
   constructor(scene: Phaser.Scene, name: EnemyName) {
@@ -23,14 +20,22 @@ export class Enemy extends Phaser.GameObjects.Image {
     this.speed = enemyData.speed
     this.gold = enemyData.gold
 
+
+    this.setOrigin(0.5)
+      .setVisible(false)
+
     scene.add.existing(this)
     scene.physics.world.enable(this)
   }
 
   move(route: Phaser.Curves.Path) {
-    this.path.t += this.speed
-    route.getPoint(this.path.t, this.path.vec)
-    this.setPosition(this.path.vec.x, this.path.vec.y)
+    this.pathT += this.speed
+    const vec = route.getPoint(this.pathT)
+    if (vec)
+      this.setPosition(vec.x, vec.y)
+
+    if (!this.visible && this.y <= 352)
+      this.setVisible(true)
   }
 
   damaged(atk: number) {
@@ -39,13 +44,14 @@ export class Enemy extends Phaser.GameObjects.Image {
   }
 
   private damagedAnims() {
-    if (this.isDuringHitAnims || this.hp <= 0)
+    if (this.isDuringHitAnims || this.isDead())
       return
 
     this.isDuringHitAnims = true
+
     this.scene.add.tween({
       targets: this,
-      angle: 30,
+      scale: 0.8,
       duration: 60,
       yoyo: true,
       onComplete: () => this.isDuringHitAnims = false
@@ -53,7 +59,7 @@ export class Enemy extends Phaser.GameObjects.Image {
   }
 
   isDead(): boolean {
-    return this.hp <= 0 || this.path.t >= 1
+    return this.hp <= 0 || this.pathT >= 1
   }
 
   private getGold(): number {
@@ -74,8 +80,7 @@ export class Enemy extends Phaser.GameObjects.Image {
     this.scene.add.tween({
       targets: this,
       angle: 40,
-      y: this.y + 10,
-      x: this.x + 10,
+      x: this.x + 15,
       alpha: 0,
       duration: 500
     })
