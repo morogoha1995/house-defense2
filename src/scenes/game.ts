@@ -1,7 +1,7 @@
 import { Field } from "../objects/field"
 import { Wave } from "../objects/wave"
 import { Shop } from "../objects/shop"
-import { WeaponName } from "../types/weapon"
+import { WeaponName, ExplosiveName } from "../types/weapon"
 import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
 import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
@@ -109,7 +109,7 @@ class Game extends Phaser.Scene {
 
     const name = <WeaponName>this.selectedWeapon.name
 
-    let weapon
+    let weapon: Explosive | Extensive | Shootable
 
     if (name === "rocket")
       weapon = new Explosive(this, x, y, name)
@@ -118,6 +118,9 @@ class Game extends Phaser.Scene {
     else
       weapon = new Shootable(this, x, y, name)
 
+    weapon.on("pointerdown", () => {
+      const box = weapon.createUpgradeBox()
+    })
     this.weaponGroup.add(weapon)
     this.shop.minusGold(weapon.getPrice())
   }

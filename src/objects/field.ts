@@ -4,7 +4,7 @@ class Field {
   route: Phaser.Curves.Path
   private map = {
     path: {
-      start: { x: 272, y: 352 },
+      start: { x: 272, y: 420 },
       to: [
         { x: 256, y: 288 },
         { x: 288, y: 288 },

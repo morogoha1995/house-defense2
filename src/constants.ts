@@ -1,9 +1,5 @@
-const WIDTH = 320
-const HEIGHT = 400
-const TILE_SIZE = 32
-
-export {
-  WIDTH,
-  HEIGHT,
-  TILE_SIZE
-}
+export const WIDTH = 320,
+  HALF_WIDTH = WIDTH / 2,
+  HEIGHT = 400,
+  HALF_HEIGHT = HEIGHT / 2,
+  TILE_SIZE = 32
