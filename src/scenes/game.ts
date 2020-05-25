@@ -128,11 +128,11 @@ class Game extends Phaser.Scene {
             return
 
           if (weapon.canUpgrade(this.shop.getGold())) {
+            infoWindow.upgradeTween()
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
-          }
-
-          infoWindow.upgradeTween()
+          } else
+            infoWindow.textTween("ゴールドが足りません")
         })
 
       infoWindow.getByName("sellBtn")
