@@ -4,6 +4,7 @@ import { Enemy } from "../enemy"
 import { EnemyGroup } from "../enemyGroup"
 import { WIDTH, HEIGHT, HALF_WIDTH, HALF_HEIGHT } from "../../constants"
 import { createFontStyle } from "../../utils/text"
+import { InfoWindow } from "./infoWindow"
 
 export class Weapon extends Phaser.GameObjects.Image {
   protected enName: string
@@ -70,39 +71,17 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.atk += this.atk
   }
 
-  createUpgradeBox(): Phaser.GameObjects.Container {
-    const container = this.scene.add.container(HALF_WIDTH, HALF_HEIGHT)
+  createInfoWindow(): InfoWindow {
+    const nameText = this.grade === 0 ? `${this.jaName} +${this.grade}` : this.jaName
 
-    const rect = this.scene.add.rectangle(0, 0, 280, 200, 0x202020, 1)
-      .setOrigin(0.5)
+    const infoWindow = new InfoWindow(
+      this.scene,
+      nameText,
+      `強化: ${this.calcPrice()}`,
+      `売却: ${this.calcSellPrice()}`
+    )
 
-    const nameText = this.grade > 0 ? `${this.jaName} +${this.grade}` : this.jaName
-
-    const name = this.scene.add.text(0, -40, nameText, createFontStyle("teal"))
-      .setOrigin(0.5)
-      .setDepth(20)
-
-    const x = this.scene.add.image(100, -60, "x")
-      .setInteractive()
-      .on("pointerdown", () => { container.destroy() })
-
-    const btnY = 40
-    const upgradeBtn = this.scene.add.text(-60, btnY, `強化: ${this.calcPrice()}G`, createFontStyle("red"))
-      .setInteractive()
-      .setName("upgradeBtn")
-      .setBackgroundColor("blue")
-      .setOrigin(0.5)
-
-    const sellBtn = this.scene.add.text(60, btnY, `売却: ${this.calcSellPrice()}G`, createFontStyle("blue"))
-      .setInteractive()
-      .setName("sellBtn")
-      .setBackgroundColor("green")
-      .setOrigin(0.5)
-
-    return container.add([
-      rect, name, x, upgradeBtn, sellBtn
-    ])
-      .setDepth(20)
+    return infoWindow
   }
 
   calcPrice(): number {
