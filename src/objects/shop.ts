@@ -45,6 +45,10 @@ export class Shop {
     }
   }
 
+  getGold(): number {
+    return this.gold
+  }
+
   addGold(gold: number) {
     this.gold += gold
     this.changeGoldText()
@@ -58,6 +62,7 @@ export class Shop {
     this.gold -= value
     this.changeGoldText()
   }
+
   canBuy(name: WeaponName): boolean {
     const wd = weaponDatas[name]
     return this.gold >= wd.price

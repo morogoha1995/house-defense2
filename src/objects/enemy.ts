@@ -51,7 +51,7 @@ export class Enemy extends Phaser.GameObjects.Image {
 
     this.scene.add.tween({
       targets: this,
-      scale: 0.8,
+      angle: 30,
       duration: 60,
       yoyo: true,
       onComplete: () => this.isDuringHitAnims = false

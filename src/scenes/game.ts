@@ -120,7 +120,26 @@ class Game extends Phaser.Scene {
 
     weapon.on("pointerdown", () => {
       const box = weapon.createUpgradeBox()
+
+      box.getByName("upgradeBtn")
+        .on("pointerdown", () => {
+          if (weapon.canUpgrade(this.shop.getGold())) {
+            this.shop.minusGold(weapon.calcPrice())
+            weapon.upgrade()
+          }
+
+          box.destroy()
+        })
+
+      box.getByName("sellBtn")
+        .on("pointerdown", () => {
+          this.shop.addGold(weapon.calcSellPrice())
+          weapon.destroy()
+
+          box.destroy()
+        })
     })
+
     this.weaponGroup.add(weapon)
     this.shop.minusGold(weapon.getPrice())
   }

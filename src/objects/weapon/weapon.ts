@@ -60,6 +60,16 @@ export class Weapon extends Phaser.GameObjects.Image {
     return this.isReloaded() && this.isInRange(e)
   }
 
+  canUpgrade(gold: number): boolean {
+    return this.calcPrice() <= gold
+  }
+
+  upgrade() {
+    this.grade++
+    this.price += this.price
+    this.atk += this.atk
+  }
+
   createUpgradeBox(): Phaser.GameObjects.Container {
     const container = this.scene.add.container(HALF_WIDTH, HALF_HEIGHT)
 
@@ -78,11 +88,13 @@ export class Weapon extends Phaser.GameObjects.Image {
 
     const btnY = 40
     const upgradeBtn = this.scene.add.text(-60, btnY, `強化: ${this.calcPrice()}G`, createFontStyle("red"))
+      .setInteractive()
       .setName("upgradeBtn")
       .setBackgroundColor("blue")
       .setOrigin(0.5)
 
     const sellBtn = this.scene.add.text(60, btnY, `売却: ${this.calcSellPrice()}G`, createFontStyle("blue"))
+      .setInteractive()
       .setName("sellBtn")
       .setBackgroundColor("green")
       .setOrigin(0.5)
