@@ -124,20 +124,26 @@ class Game extends Phaser.Scene {
 
       infoWindow.getByName("upgradeBtn")
         .on("pointerdown", () => {
+          if (infoWindow.inAnims)
+            return
+
           if (weapon.canUpgrade(this.shop.getGold())) {
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
           }
 
-          infoWindow.closeTween()
+          infoWindow.upgradeTween()
         })
 
       infoWindow.getByName("sellBtn")
         .on("pointerdown", () => {
+          if (infoWindow.inAnims)
+            return
+
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
 
-          infoWindow.closeTween()
+          infoWindow.sellTween()
         })
     })
 
