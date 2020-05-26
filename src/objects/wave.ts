@@ -1,5 +1,7 @@
 import { EnemyGroup } from "./enemyGroup"
 import { EnemyName } from "../types/enemy"
+import { createFontStyle } from "../utils/text"
+import { HALF_WIDTH } from "../constants"
 
 export class Wave {
   private current = 1
@@ -30,16 +32,39 @@ export class Wave {
   goToNext(scene: Phaser.Scene) {
     this.isStop = true
 
+    this.current++
+    this.nextWaveTextTween(scene)
+
     scene.time.addEvent({
       delay: 2000,
       callback: () => {
         this.isStop = false
         this.spawnCount = 1
-        this.current++
 
         if (this.current % 5 === 0)
           this.upDifficulty()
       }
+    })
+  }
+
+  private nextWaveTextTween(scene: Phaser.Scene) {
+    const text = scene.add.text(280, 120, `${this.current} Wave`, createFontStyle("purple"))
+      .setOrigin(0.5)
+      .setAlpha(0)
+      .setDepth(30)
+
+    scene.add.tween({
+      targets: text,
+      duration: 1000,
+      x: HALF_WIDTH,
+      alpha: 1,
+      onComplete: () => scene.add.tween({
+        targets: text,
+        delay: 500,
+        duration: 200,
+        alpha: 0,
+        onComplete: () => text.destroy()
+      })
     })
   }
 
