@@ -1,10 +1,15 @@
-export const createFontStyle = (color: string, fontSize = 24) => {
-  return {
+export const createFontStyle = (color: string, fontSize = 24, isStroke = true) => {
+  const fontStyle: any = {
     color: color,
-    stroke: "white",
     fontFamily: "Fira code, Meiryo",
     fontSize: `${fontSize}px`,
-    fontStyle: "bold",
-    strokeThickness: 6
+    fontStyle: "bold"
   }
+
+  if (isStroke) {
+    fontStyle.stroke = "white"
+    fontStyle.strokeThickness = 6
+  }
+
+  return fontStyle
 }

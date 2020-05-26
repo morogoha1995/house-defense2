@@ -1,6 +1,7 @@
 import weaponDatas from "../datas/weapon.json"
 import { WeaponName } from "../types/weapon"
 import { WIDTH, HEIGHT } from "../constants"
+import { createFontStyle } from "../utils/text"
 
 export class Shop {
   private gold = 500
@@ -9,17 +10,17 @@ export class Shop {
 
   constructor(scene: Phaser.Scene) {
     // create boxes
-    const baseX = 6
-    let x = baseX
-    let y = HEIGHT - 39
-    let col = 0
-    const addX = WIDTH / 3
+    const maxCol = 5
+    const addX = WIDTH / maxCol
     const addY = 26
-    const maxCol = 3
+    const baseX = addX / 2
+    let x = baseX
+    let y = HEIGHT - 20
+    let col = 0
 
-    col++
-    this.goldText = scene.add.text(x, y, `所持金: ${this.gold}G`)
-    x += addX
+    //col++
+    this.goldText = scene.add.text(16, y - 40, `所持金: ${this.gold}G`, createFontStyle("black", 16))
+
 
     const wds: any = weaponDatas
     for (let key in wds) {
@@ -28,9 +29,13 @@ export class Shop {
 
       this.weapons[key] = scene.add.container(x, y,
         [
-          scene.add.text(35, 0, `${wd.price}G`)
+          scene.add.circle(0, 5, 20, 0xFFFFFF, 1),
+
+          scene.add.image(0, -5, key).setDisplaySize(24, 24)
           ,
-          scene.add.image(16, 0, key).setDisplaySize(24, 24)
+
+          scene.add.text(0, 5, `${wd.price}G`, createFontStyle("black", 14, false))
+            .setOrigin(0.5, 0)
         ]
       )
         .setSize(addX, addY)
