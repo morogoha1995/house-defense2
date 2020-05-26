@@ -1,5 +1,6 @@
 import { HALF_WIDTH, HEIGHT, HALF_HEIGHT } from "../../constants"
 import { createFontStyle } from "../../utils/text"
+import { TweenName } from "../../types/infoWidnow"
 
 export class InfoWindow extends Phaser.GameObjects.Container {
   private isDuringAnims = false
@@ -22,7 +23,7 @@ export class InfoWindow extends Phaser.GameObjects.Container {
 
         scene.add.image(110, -70, "x")
           .setInteractive()
-          .on("pointerdown", () => this.closeTween()),
+          .on("pointerdown", () => this.tween("close")),
 
         scene.add.text(-60, btnY, priceText, createFontStyle("red", btnFontSize))
           .setInteractive()
@@ -42,12 +43,11 @@ export class InfoWindow extends Phaser.GameObjects.Container {
     scene.add.existing(this)
   }
 
-  openTween() {
-    if (this.inAnims)
-      return
+  get inAnims(): boolean {
+    return this.isDuringAnims
+  }
 
-    this.isDuringAnims = true
-
+  private openTween() {
     this.scene.add.tween({
       targets: this,
       duration: 200,
@@ -57,16 +57,7 @@ export class InfoWindow extends Phaser.GameObjects.Container {
     })
   }
 
-  get inAnims() {
-    return this.isDuringAnims
-  }
-
   private handTween(x: number, y: number) {
-    if (this.inAnims)
-      return
-
-    this.isDuringAnims = true
-
     const hand = this.scene.add.image(x, y, "hand")
 
     this.add(hand)
@@ -76,24 +67,19 @@ export class InfoWindow extends Phaser.GameObjects.Container {
       duration: 200,
       angle: 90,
       yoyo: true,
-      onComplete: () => this.destroyTween()
+      onComplete: () => this.closeTween()
     })
   }
 
-  upgradeTween() {
+  private upgradeTween() {
     this.handTween(-100, 10)
   }
 
-  sellTween() {
+  private sellTween() {
     this.handTween(20, 10)
   }
 
-  textTween(text: string) {
-    if (this.inAnims)
-      return
-
-    this.isDuringAnims = true
-
+  private textTween(text: string) {
     const t = this.scene.add.text(0, 0, text, createFontStyle("#202020"))
       .setOrigin(0.5)
       .setAngle(-5)
@@ -105,21 +91,30 @@ export class InfoWindow extends Phaser.GameObjects.Container {
       duration: 200,
       angle: 5,
       yoyo: true,
-      onComplete: () => this.destroyTween()
+      onComplete: () => this.closeTween()
     })
   }
 
-  private closeTween() {
-    if (this.inAnims)
+  tween(name: TweenName) {
+    if (this.isDuringAnims)
       return
 
     this.isDuringAnims = true
 
-    this.destroyTween()
+    if (name === "open")
+      this.openTween()
+    else if (name === "close")
+      this.closeTween()
+    else if (name === "upgrade")
+      this.upgradeTween()
+    else if (name === "sell")
+      this.sellTween()
+    else if (name === "notEnoughGold")
+      this.textTween("ゴールドが足りません")
   }
 
 
-  private destroyTween() {
+  private closeTween() {
     this.scene.add.tween({
       targets: this,
       duration: 200,

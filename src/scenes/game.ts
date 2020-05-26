@@ -120,7 +120,7 @@ class Game extends Phaser.Scene {
 
     weapon.on("pointerdown", () => {
       const infoWindow = weapon.createInfoWindow()
-      infoWindow.openTween()
+      infoWindow.tween("open")
 
       infoWindow.getByName("upgradeBtn")
         .on("pointerdown", () => {
@@ -128,11 +128,11 @@ class Game extends Phaser.Scene {
             return
 
           if (weapon.canUpgrade(this.shop.getGold())) {
-            infoWindow.upgradeTween()
+            infoWindow.tween("upgrade")
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
           } else
-            infoWindow.textTween("ゴールドが足りません")
+            infoWindow.tween("notEnoughGold")
         })
 
       infoWindow.getByName("sellBtn")
@@ -143,7 +143,7 @@ class Game extends Phaser.Scene {
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
 
-          infoWindow.sellTween()
+          infoWindow.tween("sell")
         })
     })
 
