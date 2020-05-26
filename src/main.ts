@@ -26,7 +26,7 @@ window.onload = () => {
     physics: {
       default: "arcade"
     },
-    backgroundColor: "#333333",
+    backgroundColor: "#202020",
     scene: [
       Boot,
       Game,

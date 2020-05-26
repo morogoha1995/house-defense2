@@ -20,7 +20,7 @@ export class InfoWindow extends Phaser.GameObjects.Container {
       .setDepth(20)
       .setScale(0)
       .add([
-        scene.add.rectangle(0, 0, 280, 200, 0x404040, 1)
+        scene.add.rectangle(0, 0, 280, 200, 0x606060, 0.6)
           .setOrigin(0.5),
 
         scene.add.text(0, -40, nameText, createFontStyle("teal"))

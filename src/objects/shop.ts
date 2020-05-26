@@ -18,9 +18,8 @@ export class Shop {
     let y = HEIGHT - 20
     let col = 0
 
-    //col++
-    this.goldText = scene.add.text(16, y - 40, `所持金: ${this.gold}G`, createFontStyle("black", 16))
-
+    this.goldText = scene.add.text(16, y - 45, `所持金: ${this.gold}G`, createFontStyle("orange", 18))
+      .setDepth(30)
 
     const wds: any = weaponDatas
     for (let key in wds) {
