@@ -1,14 +1,14 @@
 import { Field } from "../objects/field"
 import { Wave } from "../objects/wave"
 import { Shop } from "../objects/shop"
-import { WeaponName, ExplosiveName } from "../types/weapon"
+import { WeaponName } from "../types/weapon"
 import { WeaponGroup } from "../objects/weapon/weaponGroup"
 import { Shootable } from "../objects/weapon/shootable"
 import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
 import { Explosive } from "../objects/weapon/explosive"
 import { Extensive } from "../objects/weapon/extensive"
 
-class Game extends Phaser.Scene {
+export class Game extends Phaser.Scene {
   private field!: Field
   private wave!: Wave
   private weaponGroup!: WeaponGroup
@@ -75,7 +75,6 @@ class Game extends Phaser.Scene {
     if (!sw)
       return
 
-
     this.selectedWeapon.setIsOverlap("toWeapon", this.physics.overlap(sw, this.weaponGroup))
 
     const tiles = this.field.layer.getTilesWithinWorldXY(Math.floor(sw.body.left), Math.floor(sw.body.top), sw.body.width, sw.body.height)
@@ -85,7 +84,6 @@ class Game extends Phaser.Scene {
       if (isOverlapToRoute)
         break
     }
-
     this.selectedWeapon.setIsOverlap("toRoute", isOverlapToRoute)
 
     const alpha = this.selectedWeapon.getIsOverlap() ? 0.3 : 1
@@ -104,8 +102,6 @@ class Game extends Phaser.Scene {
     this.selectedWeapon.rm()
     if (this.selectedWeapon.getIsOverlap())
       return
-
-
 
     const name = <WeaponName>this.selectedWeapon.name
 
@@ -142,7 +138,6 @@ class Game extends Phaser.Scene {
 
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
-
           infoWindow.tween("sell")
         })
     })
@@ -150,8 +145,4 @@ class Game extends Phaser.Scene {
     this.weaponGroup.add(weapon)
     this.shop.minusGold(weapon.getPrice())
   }
-}
-
-export {
-  Game
 }

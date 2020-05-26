@@ -1,12 +1,17 @@
-import { HALF_WIDTH, HEIGHT, HALF_HEIGHT } from "../../constants"
+import { HEIGHT, HALF_HEIGHT, HALF_WIDTH } from "../../constants"
 import { createFontStyle } from "../../utils/text"
 import { TweenName } from "../../types/infoWidnow"
 
 export class InfoWindow extends Phaser.GameObjects.Container {
   private isDuringAnims = false
+  private baseX: number
+  private baseY: number
 
-  constructor(scene: Phaser.Scene, nameText: string, priceText: string, sellPriceText: string) {
-    super(scene, HALF_WIDTH, HEIGHT)
+  constructor(scene: Phaser.Scene, x: number, y: number, nameText: string, priceText: string, sellPriceText: string) {
+    super(scene, x, y)
+
+    this.baseX = x
+    this.baseY = y
 
     const btnY = 40,
       btnFontSize = 16
@@ -52,6 +57,7 @@ export class InfoWindow extends Phaser.GameObjects.Container {
       targets: this,
       duration: 200,
       scale: 1,
+      x: HALF_WIDTH,
       y: HALF_HEIGHT,
       onComplete: () => this.isDuringAnims = false
     })
@@ -119,7 +125,8 @@ export class InfoWindow extends Phaser.GameObjects.Container {
       targets: this,
       duration: 200,
       scale: 0,
-      y: HEIGHT,
+      x: this.baseX,
+      y: this.baseY,
       onComplete: () => this.destroy()
     })
   }

@@ -31,10 +31,9 @@ export class Wave {
     this.isStop = true
 
     scene.time.addEvent({
-      delay: 1000,
+      delay: 2000,
       callback: () => {
         this.isStop = false
-        //this.nextSpawn = 0
         this.spawnCount = 1
         this.current++
 

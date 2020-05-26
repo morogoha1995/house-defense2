@@ -76,6 +76,8 @@ export class Weapon extends Phaser.GameObjects.Image {
 
     const infoWindow = new InfoWindow(
       this.scene,
+      this.x,
+      this.y,
       nameText,
       `強化: ${this.calcPrice()}G`,
       `売却: ${this.calcSellPrice()}G`
