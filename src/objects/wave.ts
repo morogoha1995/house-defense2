@@ -48,7 +48,7 @@ export class Wave {
   }
 
   private nextWaveTextTween(scene: Phaser.Scene) {
-    const text = scene.add.text(280, 120, `${this.current} Wave`, createFontStyle("purple"))
+    const text = scene.add.text(280, 120, `Wave ${this.current}`, createFontStyle("royalblue"))
       .setOrigin(0.5)
       .setAlpha(0)
       .setDepth(30)
@@ -82,7 +82,7 @@ export class Wave {
       return
 
     const enemyName = this.determineEnemyName()
-    this.enemyGroup.spawn(enemyName)
+    this.enemyGroup.spawn(enemyName, this.current)
     this.spawnCount++
     this.nextSpawn = time + this.addPerSpawn
   }

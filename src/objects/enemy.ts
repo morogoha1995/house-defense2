@@ -11,12 +11,12 @@ export class Enemy extends Phaser.GameObjects.Image {
   private pathT = 0
   private isDuringHitAnims = false
 
-  constructor(scene: Phaser.Scene, name: EnemyName) {
+  constructor(scene: Phaser.Scene, name: EnemyName, wave: number) {
     super(scene, 0, 0, name)
 
     const enemyData = EnemyDatas[name]
 
-    this.hp = enemyData.hp
+    this.hp = enemyData.hp * wave
     this.speed = enemyData.speed
     this.gold = enemyData.gold
 

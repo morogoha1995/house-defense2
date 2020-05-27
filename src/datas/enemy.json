@@ -2,21 +2,21 @@
   "soldier": {
     "hp": 5,
     "speed": 0.0005,
-    "gold": 10
+    "gold": 5
   },
   "ghost": {
-    "hp": 5,
+    "hp": 7,
     "speed": 0.001,
-    "gold": 20
+    "gold": 10
   },
   "golem": {
     "hp": 10,
-    "speed": 0.0001,
-    "gold": 20
+    "speed": 0.0005,
+    "gold": 10
   },
   "god": {
-    "hp": 15,
+    "hp": 20,
     "speed": 0.001,
-    "gold": 10
+    "gold": 5
   }
 }

@@ -25,7 +25,7 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
     return gold
   }
 
-  spawn(name: EnemyName) {
-    this.add(new Enemy(this.scene, name))
+  spawn(name: EnemyName, wave: number) {
+    this.add(new Enemy(this.scene, name, wave))
   }
 }
