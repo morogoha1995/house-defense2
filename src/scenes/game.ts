@@ -7,6 +7,7 @@ import { Shootable } from "../objects/weapon/shootable"
 import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
 import { Explosive } from "../objects/weapon/explosive"
 import { Extensive } from "../objects/weapon/extensive"
+import { InfoWindow } from "../objects/weapon/infoWindow"
 
 export class Game extends Phaser.Scene {
   private field!: Field
@@ -15,6 +16,7 @@ export class Game extends Phaser.Scene {
   private isPlaying = false
   private shop!: Shop
   private selectedWeapon!: SelectedWeapon
+  private infoWindow!: InfoWindow
 
   constructor() {
     super({ key: "game" })
@@ -34,6 +36,7 @@ export class Game extends Phaser.Scene {
       .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
 
     this.shop = new Shop(this)
+    this.infoWindow = new InfoWindow(this)
 
     for (const key in this.shop.weapons) {
       const name = <WeaponName>key
@@ -115,30 +118,39 @@ export class Game extends Phaser.Scene {
       weapon = new Shootable(this, x, y, name)
 
     weapon.on("pointerdown", () => {
-      const infoWindow = weapon.createInfoWindow()
-      infoWindow.tween("open")
+      if (this.infoWindow.inOpen)
+        return
 
-      infoWindow.getByName("upgradeBtn")
+      this.infoWindow.setInfo(
+        weapon.x,
+        weapon.y,
+        weapon.getInfoName(),
+        weapon.calcPrice(),
+        weapon.calcSellPrice()
+      )
+      this.infoWindow.tween("open")
+
+      this.infoWindow.upgradeBtn
         .on("pointerdown", () => {
-          if (infoWindow.inAnims)
+          if (this.infoWindow.inAnims)
             return
 
           if (weapon.canUpgrade(this.shop.getGold())) {
-            infoWindow.tween("upgrade")
+            this.infoWindow.tween("upgrade")
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
           } else
-            infoWindow.tween("notEnoughGold")
+            this.infoWindow.tween("notEnoughGold")
         })
 
-      infoWindow.getByName("sellBtn")
+      this.infoWindow.sellBtn
         .on("pointerdown", () => {
-          if (infoWindow.inAnims)
+          if (this.infoWindow.inAnims)
             return
 
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
-          infoWindow.tween("sell")
+          this.infoWindow.tween("sell")
         })
     })
 

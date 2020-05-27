@@ -71,19 +71,8 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.atk += this.atk
   }
 
-  createInfoWindow(): InfoWindow {
-    const nameText = this.grade !== 0 ? `${this.jaName} +${this.grade}` : this.jaName
-
-    const infoWindow = new InfoWindow(
-      this.scene,
-      this.x,
-      this.y,
-      nameText,
-      `強化: ${this.calcPrice()}G`,
-      `売却: ${this.calcSellPrice()}G`
-    )
-
-    return infoWindow
+  getInfoName(): string {
+    return this.grade !== 0 ? `${this.jaName} +${this.grade}` : this.jaName
   }
 
   calcPrice(): number {
