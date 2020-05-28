@@ -54,11 +54,12 @@ export class Game extends Phaser.Scene {
     if (!this.isPlaying)
       return
 
-    this.checkEnemyDeath()
-    this.checkWave()
-
     this.wave.update(this.time.now, this.field.route)
     this.weaponGroup.update(this.wave.enemyGroup)
+
+    this.checkEnemyDeath()
+    this.checkWave()
+    this.checkGameover()
   }
 
   private start() {
@@ -109,6 +110,13 @@ export class Game extends Phaser.Scene {
   private checkWave() {
     if (this.wave.isToNext())
       this.wave.goToNext(this)
+  }
+
+  private checkGameover() {
+    if (this.wave.enemyGroup.checkGameover()) {
+      this.isPlaying = false
+      this.end()
+    }
   }
 
   private checkEnemyDeath() {

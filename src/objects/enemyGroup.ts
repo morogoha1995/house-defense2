@@ -25,6 +25,17 @@ export class EnemyGroup extends Phaser.GameObjects.Group {
     return gold
   }
 
+  checkGameover(): boolean {
+    let isEnd = false
+
+    this.children.iterate((e: any) => {
+      if (e.isRouteEnd())
+        isEnd = true
+    })
+
+    return isEnd
+  }
+
   spawn(name: EnemyName, wave: number) {
     this.add(new Enemy(this.scene, name, wave))
   }
