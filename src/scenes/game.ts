@@ -8,6 +8,9 @@ import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
 import { Explosive } from "../objects/weapon/explosive"
 import { Extensive } from "../objects/weapon/extensive"
 import { InfoWindow } from "../objects/weapon/infoWindow"
+import { HALF_WIDTH } from "../constants"
+import { createFontStyle } from "../utils/text"
+import { TitleContainer } from "../objects/titleContainer"
 
 export class Game extends Phaser.Scene {
   private field!: Field
@@ -43,7 +46,8 @@ export class Game extends Phaser.Scene {
       this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name))
     }
 
-    this.isPlaying = true
+    if (!this.isPlaying)
+      this.start()
   }
 
   update() {
@@ -55,6 +59,51 @@ export class Game extends Phaser.Scene {
 
     this.wave.update(this.time.now, this.field.route)
     this.weaponGroup.update(this.wave.enemyGroup)
+  }
+
+  private start() {
+    const startWindow = new TitleContainer(this, "家防衛2", "teal")
+
+    this.add.tween({
+      targets: startWindow,
+      duration: 500,
+      alpha: 1
+    })
+
+    startWindow.addStartBtn("スタート")
+      .on("pointerdown", () => this.add.tween({
+        targets: startWindow,
+        duration: 500,
+        alpha: 0,
+        onComplete: () => {
+          startWindow.destroy()
+          this.isPlaying = true
+        }
+      }))
+
+    startWindow.addSoundBtn()
+  }
+
+  private end() {
+    const endWindow = new TitleContainer(this, "GAME OVER...", "crimson")
+
+    this.add.tween({
+      targets: endWindow,
+      duration: 500,
+      alpha: 1
+    })
+
+    endWindow.addStartBtn("もう一回")
+      .on("pointerdown", () => this.add.tween({
+        targets: endWindow,
+        duration: 500,
+        alpha: 0,
+        onComplete: () => {
+          this.scene.restart({ isPlaying: true })
+        }
+      }))
+
+    endWindow.addSoundBtn()
   }
 
   private checkWave() {

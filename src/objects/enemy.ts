@@ -59,7 +59,11 @@ export class Enemy extends Phaser.GameObjects.Image {
   }
 
   isDead(): boolean {
-    return this.hp <= 0 || this.pathT >= 1
+    return this.hp <= 0
+  }
+
+  isRouteEnd(): boolean {
+    return this.pathT >= 1
   }
 
   private getGold(): number {
