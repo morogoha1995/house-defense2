@@ -18,7 +18,7 @@ export class Enemy extends Phaser.GameObjects.Image {
 
     this.hp = enemyData.hp * wave
     this.speed = enemyData.speed
-    this.gold = enemyData.gold
+    this.gold = enemyData.gold + wave
 
 
     this.setOrigin(0.5)
@@ -71,6 +71,7 @@ export class Enemy extends Phaser.GameObjects.Image {
   }
 
   die(): number {
+    this.scene.sound.play("kill")
     this.deathAnim()
 
     return this.getGold()

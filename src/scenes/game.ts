@@ -67,16 +67,20 @@ export class Game extends Phaser.Scene {
     const startWindow = new TitleContainer(this, "家防衛2", "teal", this.sound.mute)
 
     startWindow.addStartBtn("スタート")
-      .on("pointerdown", () => this.add.tween({
-        targets: startWindow,
-        duration: 500,
-        alpha: 0,
-        onComplete: () => {
-          this.isPlaying = true
-          this.sound.mute = startWindow.getIsMute()
-          startWindow.destroy()
-        }
-      }))
+      .on("pointerdown", () => {
+        this.sound.mute = startWindow.getIsMute()
+        this.sound.play("start")
+
+        this.add.tween({
+          targets: startWindow,
+          duration: 500,
+          alpha: 0,
+          onComplete: () => {
+            this.isPlaying = true
+            startWindow.destroy()
+          }
+        })
+      })
   }
 
   private createEndWindow() {
@@ -109,10 +113,8 @@ export class Game extends Phaser.Scene {
 
   private checkEnemyDeath() {
     const gold = this.wave.enemyGroup.checkDeath()
-    if (gold > 0) {
-      this.sound.play("kill")
+    if (gold > 0)
       this.shop.addGold(gold)
-    }
   }
 
   private moveSelectedWeapon(x: number, y: number) {
@@ -153,6 +155,8 @@ export class Game extends Phaser.Scene {
     if (this.selectedWeapon.getIsOverlap())
       return
 
+    this.sound.play("buy")
+
     const name = <WeaponName>this.selectedWeapon.name
 
     let weapon: Explosive | Extensive | Shootable
@@ -184,14 +188,11 @@ export class Game extends Phaser.Scene {
             return
 
           if (weapon.canUpgrade(this.shop.getGold())) {
-            this.sound.play("upgrade")
             this.infoWindow.tween("upgrade")
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
-          } else {
-            this.sound.play("notEnough")
+          } else
             this.infoWindow.tween("notEnoughGold")
-          }
         })
 
       this.infoWindow.sellBtn
@@ -199,7 +200,6 @@ export class Game extends Phaser.Scene {
           if (this.infoWindow.inAnims)
             return
 
-          this.sound.play("sell")
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
           this.infoWindow.tween("sell")

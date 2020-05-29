@@ -28,9 +28,10 @@ class Boot extends Phaser.Scene {
       .audio("kill", "assets/audios/kill.mp3")
       .audio("death", "assets/audios/death.mp3")
       .audio("next", "assets/audios/next.mp3")
-      .audio("sell", "assets/audio/sell.mp3")
+      .audio("sell", "assets/audios/sell.mp3")
       .audio("upgrade", "assets/audios/upgrade.mp3")
       .audio("buy", "assets/audios/buy.mp3")
+      .audio("start", "assets/audios/start.mp3")
   }
 
   create() {

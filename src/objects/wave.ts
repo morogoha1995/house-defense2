@@ -48,6 +48,8 @@ export class Wave {
   }
 
   private nextWaveTextTween(scene: Phaser.Scene) {
+    scene.sound.play("next")
+
     const text = scene.add.text(280, 120, `Wave ${this.current}`, createFontStyle("royalblue"))
       .setOrigin(0.5)
       .setAlpha(0)
@@ -69,11 +71,11 @@ export class Wave {
   }
 
   private upDifficulty() {
-    if (this.difficulty > 5)
-      return
-
     this.difficulty++
-    this.addPerSpawn -= 200
+
+    if (this.addPerSpawn >= 400)
+      this.addPerSpawn -= 200
+
     this.maxSpawnCount += 5
   }
 

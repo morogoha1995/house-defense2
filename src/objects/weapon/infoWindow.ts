@@ -81,14 +81,18 @@ export class InfoWindow extends Phaser.GameObjects.Container {
   }
 
   private upgradeTween() {
+    this.scene.sound.play("upgrade")
     this.handTween(-100, 10)
   }
 
   private sellTween() {
+    this.scene.sound.play("sell")
     this.handTween(20, 10)
   }
 
   private textTween(text: string) {
+    this.scene.sound.play("notEnough")
+
     const t = this.scene.add.text(0, 0, text, createFontStyle("#202020"))
       .setOrigin(0.5)
       .setAngle(-5)
