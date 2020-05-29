@@ -24,6 +24,12 @@ class Boot extends Phaser.Scene {
       .image("flameBullet", "assets/imgs/weapon/bullet/flame-bullet.png")
       .spritesheet("tileset", "assets/imgs/tileset.png", { frameWidth: 32, frameHeight: 32 })
 
+      .audio("notEnough", "assets/audios/not_enough.mp3")
+      .audio("kill", "assets/audios/kill.mp3")
+      .audio("death", "assets/audios/death.mp3")
+      .audio("next", "assets/audios/next.mp3")
+      .audio("sell", "assets/audio/sell.mp3")
+      .audio("upgrade", "assets/audios/upgrade.mp3")
   }
 
   create() {
