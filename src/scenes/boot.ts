@@ -30,6 +30,7 @@ class Boot extends Phaser.Scene {
       .audio("next", "assets/audios/next.mp3")
       .audio("sell", "assets/audio/sell.mp3")
       .audio("upgrade", "assets/audios/upgrade.mp3")
+      .audio("buy", "assets/audios/buy.mp3")
   }
 
   create() {
