@@ -27,6 +27,7 @@ export class Game extends Phaser.Scene {
 
   init(data: any) {
     this.isPlaying = data.isPlaying || false
+    this.sound.mute = data.isMute || false
   }
 
   create() {
@@ -65,46 +66,32 @@ export class Game extends Phaser.Scene {
   private start() {
     const startWindow = new TitleContainer(this, "家防衛2", "teal")
 
-    this.add.tween({
-      targets: startWindow,
-      duration: 500,
-      alpha: 1
-    })
-
     startWindow.addStartBtn("スタート")
       .on("pointerdown", () => this.add.tween({
         targets: startWindow,
         duration: 500,
         alpha: 0,
         onComplete: () => {
-          startWindow.destroy()
           this.isPlaying = true
+          this.sound.mute = startWindow.getIsMute()
+          startWindow.destroy()
         }
       }))
-
-    startWindow.addSoundBtn()
   }
 
   private end() {
     const endWindow = new TitleContainer(this, "GAME OVER...", "crimson")
-
-    this.add.tween({
-      targets: endWindow,
-      duration: 500,
-      alpha: 1
-    })
 
     endWindow.addStartBtn("もう一回")
       .on("pointerdown", () => this.add.tween({
         targets: endWindow,
         duration: 500,
         alpha: 0,
-        onComplete: () => {
-          this.scene.restart({ isPlaying: true })
-        }
+        onComplete: () => this.scene.restart({
+          isPlaying: true,
+          isMute: endWindow.getIsMute()
+        })
       }))
-
-    endWindow.addSoundBtn()
   }
 
   private checkWave() {
@@ -174,6 +161,7 @@ export class Game extends Phaser.Scene {
     else
       weapon = new Shootable(this, x, y, name)
 
+    // Added Events
     weapon.on("pointerdown", () => {
       if (this.infoWindow.inOpen)
         return
