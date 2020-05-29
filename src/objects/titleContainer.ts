@@ -12,7 +12,7 @@ export class TitleContainer extends Phaser.GameObjects.Container {
     this
       .add(
         scene.add
-          .text(0, -140, text, createFontStyle(color, 36))
+          .text(0, -120, text, createFontStyle(color, 48))
           .setOrigin(0.5)
       )
       .setAlpha(0)
@@ -31,15 +31,15 @@ export class TitleContainer extends Phaser.GameObjects.Container {
   }
 
   addStartBtn(text: string): Phaser.GameObjects.Text {
-    const quarterWidth = HALF_WIDTH / 2
-    return this.addBtn(text, -quarterWidth, 0, "teal", "skyblue")
+    const quarterWidth = HALF_WIDTH / 3
+    return this.addBtn(text, -quarterWidth, 0, "limegreen", "lightgreen")
   }
 
   private addSoundBtn(): Phaser.GameObjects.Text {
     const x = HALF_WIDTH / 2
     const y = 0
 
-    const soundBtn = this.addBtn("音", x, y, "salmon", "lime")
+    const soundBtn = this.addBtn("音", x, y, "salmon", "darkorange")
 
     const xMark = this.scene.add.image(x, y, "x")
       .setDepth(30)
@@ -58,7 +58,7 @@ export class TitleContainer extends Phaser.GameObjects.Container {
 
 
   private addBtn(text: string, x: number, y: number, color: string, bgColor: string): Phaser.GameObjects.Text {
-    const btn = this.scene.add.text(x, y, text, createFontStyle(color))
+    const btn = this.scene.add.text(x, y, text, createFontStyle(color, 30))
       .setOrigin(0.5)
       .setPadding(6, 6, 6, 6)
       .setBackgroundColor(bgColor)

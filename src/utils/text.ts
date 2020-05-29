@@ -1,7 +1,7 @@
 export const createFontStyle = (color: string, fontSize = 24, isStroke = true) => {
   const fontStyle: any = {
     color: color,
-    fontFamily: "Fira code, Meiryo",
+    fontFamily: "Meiryo",
     fontSize: `${fontSize}px`,
     fontStyle: "bold"
   }

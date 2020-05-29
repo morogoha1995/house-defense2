@@ -84,7 +84,7 @@ export class Game extends Phaser.Scene {
   }
 
   private createEndWindow() {
-    const endWindow = new TitleContainer(this, "GAME OVER...", "crimson", this.sound.mute)
+    const endWindow = new TitleContainer(this, "陥落...", "crimson", this.sound.mute)
 
     endWindow.addStartBtn("もう一回")
       .on("pointerdown", () => this.add.tween({
@@ -96,6 +96,18 @@ export class Game extends Phaser.Scene {
           isMute: endWindow.getIsMute()
         })
       }))
+
+    endWindow.addTweetBtn()
+      .on("pointerdown", () => this.tweet())
+  }
+
+  private tweet() {
+    const url = "https://meisoudev.com/games/house-defense2/"
+    const text = `Wave ${this.wave.getCurrent()}にて陥落。`
+
+    const tweetURL = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=家防衛2`
+
+    window.open(tweetURL, "blank")
   }
 
   private checkWave() {

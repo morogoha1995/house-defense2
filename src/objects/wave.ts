@@ -6,7 +6,6 @@ import { HALF_WIDTH } from "../constants"
 export class Wave {
   private current = 1
   private nextSpawn = 0
-  private difficulty = 1
   private addPerSpawn = 2000
   private maxSpawnCount = 10
   private spawnCount = 1
@@ -47,6 +46,10 @@ export class Wave {
     })
   }
 
+  getCurrent(): number {
+    return this.current
+  }
+
   private nextWaveTextTween(scene: Phaser.Scene) {
     scene.sound.play("next")
 
@@ -71,8 +74,6 @@ export class Wave {
   }
 
   private upDifficulty() {
-    this.difficulty++
-
     if (this.addPerSpawn >= 400)
       this.addPerSpawn -= 200
 
