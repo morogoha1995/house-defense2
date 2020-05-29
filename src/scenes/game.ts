@@ -48,7 +48,7 @@ export class Game extends Phaser.Scene {
     }
 
     if (!this.isPlaying)
-      this.start()
+      this.createStartWindow()
   }
 
   update() {
@@ -63,7 +63,7 @@ export class Game extends Phaser.Scene {
     this.checkGameover()
   }
 
-  private start() {
+  private createStartWindow() {
     const startWindow = new TitleContainer(this, "家防衛2", "teal")
 
     startWindow.addStartBtn("スタート")
@@ -79,7 +79,7 @@ export class Game extends Phaser.Scene {
       }))
   }
 
-  private end() {
+  private createEndWindow() {
     const endWindow = new TitleContainer(this, "GAME OVER...", "crimson")
 
     endWindow.addStartBtn("もう一回")
@@ -101,15 +101,18 @@ export class Game extends Phaser.Scene {
 
   private checkGameover() {
     if (this.wave.enemyGroup.checkGameover()) {
+      this.sound.play("death")
       this.isPlaying = false
-      this.end()
+      this.createEndWindow()
     }
   }
 
   private checkEnemyDeath() {
     const gold = this.wave.enemyGroup.checkDeath()
-    if (gold > 0)
+    if (gold > 0) {
+      this.sound.play("kill")
       this.shop.addGold(gold)
+    }
   }
 
   private moveSelectedWeapon(x: number, y: number) {
@@ -181,11 +184,14 @@ export class Game extends Phaser.Scene {
             return
 
           if (weapon.canUpgrade(this.shop.getGold())) {
+            this.sound.play("upgrade")
             this.infoWindow.tween("upgrade")
             this.shop.minusGold(weapon.calcPrice())
             weapon.upgrade()
-          } else
+          } else {
+            this.sound.play("notEnough")
             this.infoWindow.tween("notEnoughGold")
+          }
         })
 
       this.infoWindow.sellBtn
@@ -193,6 +199,7 @@ export class Game extends Phaser.Scene {
           if (this.infoWindow.inAnims)
             return
 
+          this.sound.play("sell")
           this.shop.addGold(weapon.calcSellPrice())
           weapon.destroy()
           this.infoWindow.tween("sell")
