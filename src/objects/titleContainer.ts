@@ -2,10 +2,12 @@ import { HALF_WIDTH, HALF_HEIGHT, WIDTH } from "../constants";
 import { createFontStyle } from "../utils/text";
 
 export class TitleContainer extends Phaser.GameObjects.Container {
-  private isMute = false
+  private isMute: boolean
 
-  constructor(scene: Phaser.Scene, text: string, color: string) {
+  constructor(scene: Phaser.Scene, text: string, color: string, isMute: boolean) {
     super(scene, HALF_WIDTH, HALF_HEIGHT)
+
+    this.isMute = isMute
 
     this
       .add(
@@ -34,8 +36,20 @@ export class TitleContainer extends Phaser.GameObjects.Container {
   }
 
   private addSoundBtn(): Phaser.GameObjects.Text {
-    return this.addBtn("音", HALF_WIDTH / 2, 0, "salmon", "lime")
-      .on("pointerdown", () => this.isMute = !this.isMute)
+    const x = HALF_WIDTH / 2
+    const y = 0
+
+    const soundBtn = this.addBtn("音", x, y, "salmon", "lime")
+
+    const xMark = this.scene.add.image(x, y, "x")
+      .setDepth(30)
+      .setVisible(this.isMute)
+    this.add(xMark)
+
+    return soundBtn.on("pointerdown", () => {
+      this.isMute = !this.isMute
+      xMark.setVisible(this.isMute)
+    })
   }
 
   addTweetBtn(): Phaser.GameObjects.Text {

@@ -64,7 +64,7 @@ export class Game extends Phaser.Scene {
   }
 
   private createStartWindow() {
-    const startWindow = new TitleContainer(this, "家防衛2", "teal")
+    const startWindow = new TitleContainer(this, "家防衛2", "teal", this.sound.mute)
 
     startWindow.addStartBtn("スタート")
       .on("pointerdown", () => this.add.tween({
@@ -80,7 +80,7 @@ export class Game extends Phaser.Scene {
   }
 
   private createEndWindow() {
-    const endWindow = new TitleContainer(this, "GAME OVER...", "crimson")
+    const endWindow = new TitleContainer(this, "GAME OVER...", "crimson", this.sound.mute)
 
     endWindow.addStartBtn("もう一回")
       .on("pointerdown", () => this.add.tween({
