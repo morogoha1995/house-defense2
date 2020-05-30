@@ -16,14 +16,13 @@ const determineZoom = (width: number, height: number): number => {
 
 window.onload = () => {
   const zoom = determineZoom(window.innerWidth, window.innerHeight)
-  console.log(zoom)
 
   new Phaser.Game({
     type: Phaser.AUTO,
     width: WIDTH,
     height: HEIGHT,
     parent: 'app',
-    zoom: 1,
+    zoom: zoom,
     physics: {
       default: "arcade"
     },
