@@ -1,4 +1,4 @@
-import { HALF_WIDTH, HALF_HEIGHT, WIDTH } from "../constants";
+import { HALF_WIDTH, HALF_HEIGHT } from "../constants";
 import { createFontStyle } from "../utils/text";
 
 export class TitleContainer extends Phaser.GameObjects.Container {

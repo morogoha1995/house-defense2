@@ -4,7 +4,7 @@ import { WIDTH, HEIGHT } from "../constants"
 import { createFontStyle } from "../utils/text"
 
 export class Shop {
-  private gold = 5000
+  private gold = 50
   private goldText: Phaser.GameObjects.Text
   weapons: { [key: string]: Phaser.GameObjects.Container } = {}
 
@@ -33,7 +33,7 @@ export class Shop {
           scene.add.image(0, -5, key).setDisplaySize(24, 24)
           ,
 
-          scene.add.text(0, 5, `${wd.price}G`, createFontStyle("black", 14))
+          scene.add.text(0, 5, `${wd.price}G`, createFontStyle("black", 14, false))
             .setOrigin(0.5, 0)
         ]
       )
