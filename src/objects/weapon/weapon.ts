@@ -27,7 +27,8 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.setDisplaySize(wd.size, wd.size)
     this.atk = wd.atk
     this.price = wd.price
-    this.range = scene.add.circle(x, y, wd.range)
+    this.range = scene.add.circle(x, y, wd.range, 0xffffff, 0.4)
+      .setVisible(false)
     this.bullet = scene.add.image(x, y, `${name}Bullet`)
       .setVisible(false)
       .setDepth(5)
@@ -35,7 +36,10 @@ export class Weapon extends Phaser.GameObjects.Image {
     this.interval = wd.interval
     this.nextAttack = scene.time.now
 
-    this.setInteractive()
+    this
+      .setInteractive()
+      .on("pointerover", () => this.range.setVisible(true))
+      .on("pointerout", () => this.range.setVisible(false))
 
     scene.add.existing(this)
     scene.physics.world.enable([this, this.range])
