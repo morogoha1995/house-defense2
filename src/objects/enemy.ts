@@ -8,7 +8,7 @@ export class Enemy extends Phaser.GameObjects.Image {
   private hp: number
   private speed: number
   private gold: number
-  private pathT = 0.9
+  private pathT = 0
   private isDuringHitAnims = false
 
   constructor(scene: Phaser.Scene, name: EnemyName, wave: number) {

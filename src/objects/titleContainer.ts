@@ -32,12 +32,12 @@ export class TitleContainer extends Phaser.GameObjects.Container {
 
   addStartBtn(text: string): Phaser.GameObjects.Text {
     const quarterWidth = HALF_WIDTH / 3
-    return this.addBtn(text, -quarterWidth, 0, "limegreen", "lightgreen")
+    return this.addBtn(text, -quarterWidth, -20, "limegreen", "lightgreen")
   }
 
   private addSoundBtn(): Phaser.GameObjects.Text {
     const x = HALF_WIDTH / 2
-    const y = 0
+    const y = -20
 
     const soundBtn = this.addBtn("音", x, y, "salmon", "darkorange")
 
@@ -55,7 +55,7 @@ export class TitleContainer extends Phaser.GameObjects.Container {
   }
 
   addTweetBtn(): Phaser.GameObjects.Text {
-    return this.addBtn("ツイートする", 0, 100, "royalblue", "#00acee")
+    return this.addBtn("ツイートする", 0, 80, "royalblue", "#00acee")
   }
 
 
