@@ -44,7 +44,7 @@ export class Game extends Phaser.Scene {
 
     for (const key in this.shop.weapons) {
       const name = <WeaponName>key
-      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name))
+      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
     }
 
     if (!this.isPlaying)
@@ -87,15 +87,20 @@ export class Game extends Phaser.Scene {
     const endWindow = new TitleContainer(this, "陥落...", "crimson", this.sound.mute)
 
     endWindow.addStartBtn("もう一回")
-      .on("pointerdown", () => this.add.tween({
-        targets: endWindow,
-        duration: 500,
-        alpha: 0,
-        onComplete: () => this.scene.restart({
-          isPlaying: true,
-          isMute: endWindow.getIsMute()
+      .on("pointerdown", () => {
+        this.sound.mute = endWindow.getIsMute()
+        this.sound.play("start")
+
+        this.add.tween({
+          targets: endWindow,
+          duration: 500,
+          alpha: 0,
+          onComplete: () => this.scene.restart({
+            isPlaying: true,
+            isMute: endWindow.getIsMute()
+          })
         })
-      }))
+      })
 
     endWindow.addTweetBtn()
       .on("pointerdown", () => this.tweet())
@@ -154,9 +159,9 @@ export class Game extends Phaser.Scene {
     this.selectedWeapon.setAlpha(alpha)
   }
 
-  private buyWeapon(name: WeaponName) {
+  private buyWeapon(name: WeaponName, x: number, y: number) {
     if (this.shop.canBuy(name))
-      this.selectedWeapon.select(name)
+      this.selectedWeapon.select(name, x, y)
   }
 
   private putWeapon(x: number, y: number) {

@@ -4,7 +4,7 @@ import { WIDTH, HEIGHT } from "../constants"
 import { createFontStyle } from "../utils/text"
 
 export class Shop {
-  private gold = 50
+  private gold = 5000
   private goldText: Phaser.GameObjects.Text
   weapons: { [key: string]: Phaser.GameObjects.Container } = {}
 

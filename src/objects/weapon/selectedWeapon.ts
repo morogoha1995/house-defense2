@@ -27,10 +27,11 @@ export class SelectedWeapon extends Phaser.GameObjects.Container {
     return this.isSelected
   }
 
-  select(name: WeaponName) {
+  select(name: WeaponName, x: number, y: number) {
     this.rm()
     this.isSelected = true
 
+    this.setPosition(x, y)
     const wd = weaponDatas[name]
     this.name = name
     const sw = this.scene.add
@@ -43,7 +44,6 @@ export class SelectedWeapon extends Phaser.GameObjects.Container {
     this.add([
       this.scene.add
         .circle(0, 0, wd.range, 0xffffff, 0.4)
-        .setName("range")
       ,
       sw
     ])
