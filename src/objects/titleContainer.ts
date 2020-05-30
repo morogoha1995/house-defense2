@@ -49,6 +49,8 @@ export class TitleContainer extends Phaser.GameObjects.Container {
     return soundBtn.on("pointerdown", () => {
       this.isMute = !this.isMute
       xMark.setVisible(this.isMute)
+      if (!this.isMute)
+        this.scene.sound.play("buy")
     })
   }
 
