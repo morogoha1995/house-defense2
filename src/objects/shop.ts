@@ -33,7 +33,7 @@ export class Shop {
           scene.add.image(0, -5, key).setDisplaySize(24, 24)
           ,
 
-          scene.add.text(0, 5, `${wd.price}G`, createFontStyle("black", 14, false))
+          scene.add.text(0, 5, `${wd.price}G`, createFontStyle("black", 14))
             .setOrigin(0.5, 0)
         ]
       )

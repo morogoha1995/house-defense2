@@ -8,8 +8,6 @@ import { SelectedWeapon } from "../objects/weapon/selectedWeapon"
 import { Explosive } from "../objects/weapon/explosive"
 import { Extensive } from "../objects/weapon/extensive"
 import { InfoWindow } from "../objects/weapon/infoWindow"
-import { HALF_WIDTH } from "../constants"
-import { createFontStyle } from "../utils/text"
 import { TitleContainer } from "../objects/titleContainer"
 
 export class Game extends Phaser.Scene {
@@ -35,20 +33,13 @@ export class Game extends Phaser.Scene {
     this.field = new Field(this)
     this.weaponGroup = new WeaponGroup(this)
     this.selectedWeapon = new SelectedWeapon(this)
-    this.field.bg
-      .on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
-      .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
-
     this.shop = new Shop(this)
     this.infoWindow = new InfoWindow(this)
 
-    for (const key in this.shop.weapons) {
-      const name = <WeaponName>key
-      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
-    }
-
     if (!this.isPlaying)
       this.createStartWindow()
+    else
+      this.addEvents()
   }
 
   update() {
@@ -77,42 +68,22 @@ export class Game extends Phaser.Scene {
           alpha: 0,
           onComplete: () => {
             this.isPlaying = true
+            this.addEvents()
             startWindow.destroy()
           }
         })
       })
   }
 
-  private createEndWindow() {
-    const endWindow = new TitleContainer(this, "陥落...", "crimson", this.sound.mute)
+  private addEvents() {
+    this.field.bg
+      .on("pointermove", (e: any) => this.moveSelectedWeapon(e.x, e.y))
+      .on("pointerdown", (e: any) => this.putWeapon(e.x, e.y))
 
-    endWindow.addStartBtn("もう一回")
-      .on("pointerdown", () => {
-        this.sound.mute = endWindow.getIsMute()
-        this.sound.play("start")
-
-        this.add.tween({
-          targets: endWindow,
-          duration: 500,
-          alpha: 0,
-          onComplete: () => this.scene.restart({
-            isPlaying: true,
-            isMute: endWindow.getIsMute()
-          })
-        })
-      })
-
-    endWindow.addTweetBtn()
-      .on("pointerdown", () => this.tweet())
-  }
-
-  private tweet() {
-    const url = "https://meisoudev.com/games/house-defense2/"
-    const text = `Wave ${this.wave.getCurrent()}にて陥落。`
-
-    const tweetURL = `https://twitter.com/intent/tweet?text=${text}&url=${url}&hashtags=家防衛2`
-
-    window.open(tweetURL, "blank")
+    for (const key in this.shop.weapons) {
+      const name = <WeaponName>key
+      this.shop.weapons[name].on("pointerdown", (e: any) => this.buyWeapon(name, e.x, e.y))
+    }
   }
 
   private checkWave() {
@@ -122,9 +93,11 @@ export class Game extends Phaser.Scene {
 
   private checkGameover() {
     if (this.wave.enemyGroup.checkGameover()) {
-      this.sound.play("death")
-      this.isPlaying = false
-      this.createEndWindow()
+      this.scene.pause()
+      this.scene.launch("end", {
+        isMute: this.sound.mute,
+        wave: this.wave.getCurrent()
+      })
     }
   }
 

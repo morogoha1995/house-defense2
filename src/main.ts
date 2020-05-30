@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import { Boot } from "./scenes/boot"
 import { Game } from "./scenes/game"
 import { WIDTH, HEIGHT } from "./constants"
+import { End } from "./scenes/end"
 
 const determineZoom = (width: number, height: number): number => {
   const zooms = [2, 1.75, 1.5, 1.25]
@@ -30,6 +31,7 @@ window.onload = () => {
     scene: [
       Boot,
       Game,
+      End
     ]
   })
 }
